@@ -79,7 +79,7 @@ class App extends Component {
     }
 
     //get the imput from the user
-    handleSearch = (e) => {
+    handleIsThisNumberPrimeSearch = (e) => {
         e.preventDefault()
 
         //create an object to store the search filters
@@ -92,6 +92,8 @@ class App extends Component {
         for (let value of formData) {
             data[value[0]] = value[1]
         }
+        //check if the state is populated with the search params data
+        console.log(this.state.params)
 
         //assigning the object from the form data to params in the state
         this.setState({
@@ -325,7 +327,7 @@ class App extends Component {
                                     </ul>
                                     <div className="tab-content" id="myTabContent">
                                         <div className="tab-pane fade show active" id="is-this-number-prime" role="tabpanel" aria-labelledby="is-this-number-prime-tab">
-                                            <form className="form-horizontal form-label-left is-this-number-prime">
+                                            <form onSubmit={this.handleIsThisNumberPrimeSearch} className="form-horizontal form-label-left is-this-number-prime">
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is-this-number-prime-apiKey">
                                                         apiKey
