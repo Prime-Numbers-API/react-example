@@ -1,7 +1,10 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
+class App extends Component {
+    render() {
+
+    
   return (
     <div className="App">
       <body className="nav-md">
@@ -736,6 +739,7 @@ function App() {
 </body>
     </div>
   );
+    }
 }
 
 export default App;
