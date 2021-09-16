@@ -1,25 +1,29 @@
 import React, { Component } from 'react'
 import './App.css'
-import Search from './Search'
-import Book from './Book'
-import Header from './Header'
+import Results from './Results'
+import LeftColumn from './LeftColumn'
+import TopNav from './TopNav'
+import Footer from './Footer'
+import NavTabs from './NavTabs'
 
 class App extends Component {
 
-    //setup the constructor witht he default props and states
+    //setup the constructor with the default props and states
     constructor(props) {
         super(props)
-        this.state = {
-            books: [],
+        this.state = {            
+            is_this_number_prime_results: [],
             error: null,
             params: {
-                printType: '',
-                filter: '',
-                q: ''
+                is_this_number_prime_apiKey: 0,
+                is_this_number_prime_include_explanations: false,
+                is_this_number_prime_include_prime_types_list: false,
+                is_this_number_prime_language: "english",
+                is_this_number_prime_check_number: 0,
             }
         }
-    }
-
+        this.handleIsThisNumberPrimeSearch = this.handleIsThisNumberPrimeSearch.bind(this);
+    }    
     // convert query parameter from an object to a string
     formatQueryParams(params) {
         const queryItems = Object.keys(params)
@@ -27,7 +31,7 @@ class App extends Component {
         return queryItems.join('&')
     }
 
-    // if an integer is empty, undefinded or null, default it to 0
+    // if an integer is empty, undefined or null, default it to 0
     checkInteger(inputInteger) {
         let outputValue = inputInteger
         if (inputInteger === "") {
@@ -42,7 +46,7 @@ class App extends Component {
         return outputValue
     }
 
-    // if a string is undefinded or null, default it to "no details"
+    // if a string is undefined or null, default it to "no details"
     checkString(inputString) {
         let outputText = inputString
         if (inputString === undefined) {
@@ -54,7 +58,7 @@ class App extends Component {
         return outputText
     }
 
-    // if a URL is undefinded or null, default it to the root url "/"
+    // if a URL is undefined or null, default it to the root url "/"
     checkURL(inputURL) {
         let outputURL = inputURL
         if (inputURL === undefined) {
@@ -66,7 +70,7 @@ class App extends Component {
         return outputURL
     }
 
-    // if a URL is undefinded or null, default it to the root url "/"
+    // if a URL is undefined or null, default it to the root url "/"
     checkEmptyImage(inputURL) {
         let outputURL = inputURL
         if (inputURL === undefined) {
@@ -78,7 +82,7 @@ class App extends Component {
         return outputURL
     }
 
-    //get the imput from the user
+    //get the input from the user
     handleIsThisNumberPrimeSearch = (e) => {
         e.preventDefault()
 
@@ -92,200 +96,71 @@ class App extends Component {
         for (let value of formData) {
             data[value[0]] = value[1]
         }
+
         //check if the state is populated with the search params data
-        console.log(this.state.params)
+        console.log(data)
+        
 
         //assigning the object from the form data to params in the state
         this.setState({
             params: data
         })
 
-        //check if the state is populated with the search params data
-        console.log(this.state.params)
 
-        //get the google books api url
-        const searchURL = 'https://www.googleapis.com/books/v1/volumes'
+        let is_this_number_prime_api_url = `http://api.prime-numbers.io/is-this-number-prime.php?key=${data.is_this_number_prime_apiKey}&number=${data.is_this_number_prime_check_number}&include_explanations=${data.is_this_number_prime_include_explanations}&include_prime_types_list=${data.is_this_number_prime_include_prime_types_list}&language=${data.is_this_number_prime_language}`
 
-        //format the queryString paramters into an object
-        const queryString = this.formatQueryParams(data)
+        console.log(is_this_number_prime_api_url)
 
-        //sent all the params to the final url
-        const url = searchURL + '?' + queryString
-
-        console.log(url)
-
-        //define the API call parameters
-        const options = {
-            method: 'GET',
-            header: {
-                "Authorization": "",
-                "Content-Type": "application/json"
-            }
-        }
-
-        //useing the url and paramters above make the api call
-        fetch(url, options)
-
-            // if the api returns data ...
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Something went wrong, please try again later.')
+        //using the url and parameters above make the api call
+        fetch(is_this_number_prime_api_url)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
                 }
-
-                // ... convert it to json
-                return res.json()
+                return response.json().then(response => { throw new Error(response.error) })
             })
-
-            // use the json api output
-            .then(data => {
-
-                //check if there is meaningfull data
-                console.log(data);
-
-                // check if there are no results
-                if (data.totalItems === 0) {
-                    throw new Error('No books found')
-                }
-
-                // create and object with each one of the results
-                const aBooks = data.items.map(book => {
-
-                    // get the title, authors, description, imageLinks, previewLink from "volumeInfo"
-                    const { title, authors, description, imageLinks, previewLink } = book.volumeInfo
-
-                    // get the saleability, retailPrice from "saleInfo"
-                    const { saleability, retailPrice } = book.saleInfo
-
-
-                    let validatedOutput = {
-                        title: this.checkString(title),
-                        author: this.checkString(authors),
-                        description: this.checkString(description),
-                        previewLink: this.checkURL(previewLink),
-                        thumbnail_URL: this.checkEmptyImage(imageLinks.thumbnail),
-                        saleability: this.checkInteger(saleability),
-                        price: this.checkInteger(retailPrice),
-                    }
-
-                    //check if the data validation works
-                    console.log(validatedOutput);
-
-                    // fix the inconsitent results and return them
-                    return validatedOutput;
-                })
-
-                //check if the validated data is structured in a new array objects
-                console.log(aBooks);
-
-                //send all the results to the state
+            .then(responseJson => {
+                console.log(responseJson);
                 this.setState({
-                    books: aBooks,
+                    is_this_number_prime_results: responseJson,
                     error: null
                 })
+                console.log(this.state);
             })
-
-            //catch connection errors
             .catch(err => {
+                console.log(err);
                 this.setState({
-                    error: err.message
+                    error: err
                 })
+                // displayError(err, "error-is-this-number-prime")
             })
-
     }
 
     render() {
 
         //if there is an error message display it
-        const errorMessage = this.state.error ? <div>{this.state.error}</div> : false
+        
+        const errorMessage = this.state.error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{this.state.error}</strong> </div> : false
 
-        //get all the books from the state and map each book for the corresponding component
-        const books = this.state.books.map((book, i) => {
-            return <Book
-                key={i}
-                title={book.title}
-                author={book.author}
-                description={book.description}
-                previewLink={book.previewLink}
-                thumbnail_URL={book.thumbnail_URL}
-                saleability={book.saleability}
-                price={book.price}
-            />
-        })
+        let resultsOutput = ""
+        if (this.state.is_this_number_prime_results.length !== 0) {
+            resultsOutput = this.state.is_this_number_prime_results.map((value, key) => {
+                return <Results
+                    key={key}
+                    type="is_this_number_prime"
+                    content={value.is_this_number_prime_results}
+                />
+            })
+        }
+        
 
 
         return (
-            <div className="App">
-                <Header />
-                <Search handleSearch={this.handleSearch} />
-                {errorMessage}
-                <div className="search-results-wrapper">
-                {books}
-                </div>
-                <div className="container body">
         <div className="main_container">
-            <div className="col-md-3 left_col">
-                <div className="left_col scroll-view">
-                    <div className="navbar nav_title">
-                        <a href="http://prime-numbers-api.com/" target="_blank" className="site_title">
-                            <i className="fa fa-list-ol"></i>
-                            <span>Prime Example</span>
-                        </a>
-                    </div>
-                    <div className="clearfix"></div>
-                    <br />
-                    
-                    <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
-                        <div className="menu_section">
-                            <ul className="nav side-menu">
-                                <li>
-                                    <a>
-                                        <i className="fa fa-book"></i> API Docs
-                                        <span className="fa fa-chevron-down"></span>
-                                    </a>
-                                    <ul className="nav child_menu">
-                                        <li><a href="https://documenter.getpostman.com/view/4967421/U16kqQd3" target="_blank">is-this-number-prime (free)</a></li>
-                                        <li><a href="https://documenter.getpostman.com/view/4967421/U16kqQd3" target="_blank">get-random-prime (free)</a></li>
-                                        <li><a href="https://documenter.getpostman.com/view/4967421/U16kqQd3" target="_blank">get-all-primes-between-two-numbers (paid)</a></li>
-                                        <li><a href="https://documenter.getpostman.com/view/4967421/U16kqQd3" target="_blank">prospect-primes-between-two-numbers (paid)</a></li>
-                                        <li><a href="https://documenter.getpostman.com/view/4967421/U16kqQd3" target="_blank">get-isolated-random-prime (paid)</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a>
-                                        <i className="fa fa-github"></i>Code Examples
-                                        <span className="fa fa-chevron-down"></span>
-                                    </a>
-                                    <ul className="nav child_menu">
-                                        <li><a href="https://github.com/Prime-Numbers-API/jquery-example" target="_blank">JavaScript jQuery Example</a></li>
-                                        <li><a href="https://github.com/Prime-Numbers-API/javascript-fetch-example" target="_blank">JavaScript Fetch Example</a></li>
-                                        <li><a href="https://github.com/Prime-Numbers-API/react-example" target="_blank">React Example</a></li>
-                                        <li><a href="https://github.com/Prime-Numbers-API/node-example" target="_blank">NodeJS Example</a></li>
-                                        <li><a href="https://github.com/Prime-Numbers-API/php-example" target="_blank">PHP Example</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
+            <LeftColumn />
+            <TopNav />
             
-            <div className="top_nav">
-                <div className="nav_menu">
-                    <div className="nav toggle">
-                        <a id="menu_toggle"><i className="fa fa-bars"></i></a>
-                    </div>
-                    <nav className="nav navbar-nav">
-                        <ul className=" navbar-right">
-                            <li role="presentation" className="nav-item dropdown open">
-                                <a href="http://prime-numbers-api.com/" target="_blank">
-                                    <i className="fa fa-is-this-number-prime"></i> Prime-Numbers-API.com
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            
             
             <div className="right_col" role="main">
                 <div className="">
@@ -297,61 +172,44 @@ class App extends Component {
                             <div className="x_panel">
                                 <div className="x_title">
                                     <h2>
-                                        <a href="http://prime-numbers-api.com/" target="_blank">
+                                        <a href="http://prime-numbers-api.com/" target="_blank" rel="noreferrer" >
                                             <i className="fa fa-is-this-number-prime"></i> Prime-Numbers-API.com
                                         </a>
                                         <small>
-                                            <i className="fa fa-chevron-right"></i> JavaScript jQuery Example
+                                            <i className="fa fa-chevron-right"></i> React Example
                                             </small>
                                     </h2>
                                     <div className="clearfix"></div>
                                 </div>
                                 <div className="x_content">
-
-                                    <ul className="nav nav-tabs bar_tabs" id="myTab" role="tablist">
-                                        <li className="nav-item">
-                                            <a className="nav-link active" id="is-this-number-prime-tab" data-toggle="tab" href="#is-this-number-prime" role="tab" aria-controls="is-this-number-prime" aria-selected="true">is this number prime</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" id="get-random-prime-tab" data-toggle="tab" href="#get-random-prime" role="tab" aria-controls="get-random-prime" aria-selected="false">get random prime</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" id="get-all-primes-between-two-numbers-tab" data-toggle="tab" href="#get-all-primes-between-two-numbers" role="tab" aria-controls="get-all-primes-between-two-numbers" aria-selected="false">get all primes between two numbers</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" id="prospect-primes-between-two-numbers-tab" data-toggle="tab" href="#prospect-primes-between-two-numbers" role="tab" aria-controls="prospect-primes-between-two-numbers" aria-selected="false">prospect-primes-between-two-numbers</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" id="get-isolated-random-prime-tab" data-toggle="tab" href="#get-isolated-random-prime" role="tab" aria-controls="get-isolated-random-prime" aria-selected="false">get-isolated-random-prime</a>
-                                        </li>
-                                    </ul>
+                                    <NavTabs / >
                                     <div className="tab-content" id="myTabContent">
                                         <div className="tab-pane fade show active" id="is-this-number-prime" role="tabpanel" aria-labelledby="is-this-number-prime-tab">
                                             <form onSubmit={this.handleIsThisNumberPrimeSearch} className="form-horizontal form-label-left is-this-number-prime">
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is-this-number-prime-apiKey">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is_this_number_prime_apiKey">
                                                         apiKey
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="is-this-number-prime-apiKey" name="is-this-number-prime-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="is_this_number_prime_apiKey" name="is_this_number_prime_apiKey" required="required" className="form-control  " defaultValue="123" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is-this-number-prime-number-check-number">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is_this_number_prime_check_number">
                                                         Check Number
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="number" id="is-this-number-prime-number-check-number" name="is-this-number-prime-number-check-number" required="required" className="form-control " defaultValue="79" />
+                                                        <input type="number" id="is_this_number_prime_check_number" name="is_this_number_prime_check_number" required="required" className="form-control " defaultValue="79" />
                                                         <br />(Required) enter a number to check if it is prime or composite (between 1 and 10^12).
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="is-this-number-prime-include-explanations" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="is_this_number_prime_include_explanations" name="is_this_number_prime_include_explanations"  className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -361,7 +219,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="is-this-number-prime-include-prime-types-list" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="is_this_number_prime_include_prime_types_list" name="is_this_number_prime_include_prime_types_list" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -373,7 +231,7 @@ class App extends Component {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="is-this-number-prime-language" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="is_this_number_prime_language" name="is_this_number_prime_language" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -394,13 +252,8 @@ class App extends Component {
                                                     </div>
                                                 </div>
                                             </form>
-                                            <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert">
-                                                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                                <strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
-                                            </div>
-                                            
+                                            {errorMessage}
+                                            {resultsOutput}
                                             <div className="x_title display-results results-is-this-number-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -472,7 +325,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-random-prime-include-explanations" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-random-prime-include-explanations" name="get-random-prime-include-explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -482,7 +335,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-random-prime-include-prime-types-list" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-random-prime-include-prime-types-list" name="get-random-prime-include-prime-types-list"  className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -494,7 +347,7 @@ class App extends Component {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-random-prime-language" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-random-prime-language" name="get-random-prime-language" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -593,7 +446,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-all-primes-between-two-numbers-include-explanations" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-all-primes-between-two-numbers-include-explanations" name="get-all-primes-between-two-numbers-include-explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -603,7 +456,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-all-primes-between-two-numbers-include-prime-types-list" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-all-primes-between-two-numbers-include-prime-types-list" name="get-all-primes-between-two-numbers-include-prime-types-list" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -615,7 +468,7 @@ class App extends Component {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-all-primes-between-two-numbers-language" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-all-primes-between-two-numbers-language" name="get-all-primes-between-two-numbers-language"  className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -714,7 +567,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="prospect-primes-between-two-numbers-include-explanations" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="prospect-primes-between-two-numbers-include-explanations" name="prospect-primes-between-two-numbers-include-explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -724,7 +577,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="prospect-primes-between-two-numbers-include-prime-types-list" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="prospect-primes-between-two-numbers-include-prime-types-list" name="prospect-primes-between-two-numbers-include-prime-types-list" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -736,7 +589,7 @@ class App extends Component {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="prospect-primes-between-two-numbers-language" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="prospect-primes-between-two-numbers-language" name="prospect-primes-between-two-numbers-language" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -826,7 +679,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-isolated-random-prime-include-explanations" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-isolated-random-prime-include-explanations" name="get-isolated-random-prime-include-explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -836,7 +689,7 @@ class App extends Component {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-isolated-random-prime-include-prime-types-list" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-isolated-random-prime-include-prime-types-list" name="get-isolated-random-prime-include-prime-types-list" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -848,7 +701,7 @@ class App extends Component {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <select id="get-isolated-random-prime-language" className="select2_single form-control" tabindex="-1" required="required">
+                                                            <select id="get-isolated-random-prime-language" name="get-isolated-random-prime-language" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -921,16 +774,8 @@ class App extends Component {
                 </div>
             </div>
             
-            <footer>
-                <div className="pull-right">
-                    © <a href="http://prime-numbers-api.com/" target="_blank">Prime-Numbers-API.com</a>
-                </div>
-                <div className="clearfix"></div>
-            </footer>
-            
+            <Footer />
         </div>
-    </div>
-            </div>
         )
     }
 }

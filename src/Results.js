@@ -1,22 +1,22 @@
 import React from 'react'
 
-class Book extends React.Component {
+class Results extends React.Component {
     render() {
         //get the arrays of authors
         const authors = this.props.author
         //get the saleability status
         const saleability = this.props.saleability
 
-        //if the book is free ...
+        //if the Results is free ...
         if (saleability === 'FREE') {
             //... there is no price to show
             return (
                 <div className="search-results-item">
                     <h2>{this.props.title}</h2>
                     <a href={this.props.previewLink}>
-                        <img className='bookImage'
+                        <img className='ResultsImage'
                             src={this.props.thumbnail_URL}
-                            alt='bookimage' />
+                            alt='Resultsimage' />
                     </a>
 
                     <div>
@@ -28,7 +28,7 @@ class Book extends React.Component {
                 </div>
             )
         }
-        //if the book is NOT free ...
+        //if the Results is NOT free ...
         else {
             //... get the price details
             const price = this.props.price
@@ -40,7 +40,7 @@ class Book extends React.Component {
                     <h2>{this.props.title}</h2>
                     <h2>{this.props.publisher}</h2>
                     <a href={this.props.previewLink} target='_blank' rel='noopener noreferrer'>
-                        <img className='bookImage' src={this.props.thumbnail_URL} alt='bookimage' />
+                        <img className='ResultsImage' src={this.props.thumbnail_URL} alt='Resultsimage' />
                     </a>
                     <div>
                         <h3>Authors: {authors}</h3>
@@ -55,4 +55,4 @@ class Book extends React.Component {
 
 }
 
-export default Book
+export default Results
