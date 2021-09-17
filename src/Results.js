@@ -1,56 +1,64 @@
 import React from 'react'
 
 class Results extends React.Component {
+
+
+    is_this_number_prime_api_results_details(incomingData, parentKey) {
+
+            // console.log(incomingData);
+
+            //create an empty variable to store a new list item for each result
+            let buildHtmlResults = '<table class="table">';
+            let counter = 1;
+            for (let key in incomingData) {
+
+                buildHtmlResults += `<tr>`;
+                buildHtmlResults += `<th scope="row">${counter}</th>`;
+                buildHtmlResults += `<td>${key}</td>`;
+                buildHtmlResults += `<td>${incomingData[key]}</td>`;
+                buildHtmlResults += `</tr>`;
+
+                counter++;
+            }
+            buildHtmlResults += '</table>';
+
+            // console.log(buildHtmlResults);
+
+            return buildHtmlResults;
+        };
+
     render() {
-        //get the arrays of authors
-        const authors = this.props.author
-        //get the saleability status
-        const saleability = this.props.saleability
+        const content = this.props.content
+        console.log(content);
+        let counter = 1;
+        let buildHtmlResults = "";
+        for (let key in content) {
+            // console.log(typeof incomingData[key]);
+            if (typeof content[key] == "object") {
+                buildHtmlResults += `<tr class="results-is-this-number-prime-${key}">`;
+                buildHtmlResults += `<th scope="row">${counter}</th>`;
+                buildHtmlResults += `<td>${key}</td>`;
+                buildHtmlResults += `<td class="${key}">${this.is_this_number_prime_api_results_details(content[key], key)}</td>`;
+                buildHtmlResults += `</tr>`;
+            }
+            else {
+                buildHtmlResults += `<tr class="results-is-this-number-prime-${key}">`;
+                buildHtmlResults += `<th scope="row">${counter}</th>`;
+                buildHtmlResults += `<td>${key}</td>`;
+                buildHtmlResults += `<td class="${key}">${content[key]}</td>`;
+                buildHtmlResults += `</tr>`;
+            }
 
-        //if the Results is free ...
-        if (saleability === 'FREE') {
-            //... there is no price to show
-            return (
-                <div className="search-results-item">
-                    <h2>{this.props.title}</h2>
-                    <a href={this.props.previewLink}>
-                        <img className='ResultsImage'
-                            src={this.props.thumbnail_URL}
-                            alt='Resultsimage' />
-                    </a>
 
-                    <div>
-                        <h3>Authors: {authors}</h3>
-                        <h4>Price: Free</h4>
-                        <h4>Description: </h4>
-                        <p>{this.props.description}</p>
-                    </div>
-                </div>
-            )
+            counter++;
         }
-        //if the Results is NOT free ...
-        else {
-            //... get the price details
-            const price = this.props.price
-            //if the price is set, display the USD value for it as the "priceTag"; if not display nothing
-            const priceTag = (price) ? <h4>Price: {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price.amount)}</h4> : false
 
-            return (
-                <div className="search-results-item">
-                    <h2>{this.props.title}</h2>
-                    <h2>{this.props.publisher}</h2>
-                    <a href={this.props.previewLink} target='_blank' rel='noopener noreferrer'>
-                        <img className='ResultsImage' src={this.props.thumbnail_URL} alt='Resultsimage' />
-                    </a>
-                    <div>
-                        <h3>Authors: {authors}</h3>
-                        {priceTag}
-                        <h4>Description: </h4>
-                        <p>{this.props.description}</p>
-                    </div>
-                </div>
-            )
-        }
+        
+        return (
+            <>
+                {buildHtmlResults}
+            </>
+        )
     }
 
 }

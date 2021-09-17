@@ -120,12 +120,16 @@ class App extends Component {
                 return response.json().then(response => { throw new Error(response.error) })
             })
             .then(responseJson => {
-                console.log(responseJson);
+                // console.log(responseJson);
+                let current_is_this_number_prime_results = this.state.is_this_number_prime_results
+                let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
+                // console.log(updated_is_this_number_prime_results);
+                
                 this.setState({
-                    is_this_number_prime_results: responseJson,
+                    is_this_number_prime_results: current_is_this_number_prime_results,
                     error: null
                 })
-                console.log(this.state);
+                // console.log(this.state);
             })
             .catch(err => {
                 console.log(err);
@@ -143,15 +147,25 @@ class App extends Component {
         const errorMessage = this.state.error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{this.state.error}</strong> </div> : false
 
         let resultsOutput = ""
-        if (this.state.is_this_number_prime_results.length !== 0) {
-            resultsOutput = this.state.is_this_number_prime_results.map((value, key) => {
-                return <Results
-                    key={key}
-                    type="is_this_number_prime"
-                    content={value.is_this_number_prime_results}
-                />
-            })
+        if (typeof this.state.is_this_number_prime_results == Array){
+            if (this.state.is_this_number_prime_results.length !== 0) {
+                resultsOutput = this.state.is_this_number_prime_results.map((value, key) => {
+                    return <Results
+                        key={key}
+                        type="is_this_number_prime"
+                        content={value.is_this_number_prime_results}
+                    />
+                })
+            }
         }
+        else if ((typeof this.state.is_this_number_prime_results == Object)) {
+            resultsOutput = <Results
+                key="1"
+                type="is_this_number_prime"
+                content={this.state.is_this_number_prime_results.is_this_number_prime_results}
+            />
+        }
+        
         
 
 
