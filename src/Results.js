@@ -33,7 +33,7 @@ class Results extends React.Component {
         let counter = 1;
         let buildHtmlResults = "";
         for (let key in content) {
-            // console.log(typeof incomingData[key]);
+            console.log(typeof content[key]);
             if (typeof content[key] == "object") {
                 buildHtmlResults += `<tr class="results-is-this-number-prime-${key}">`;
                 buildHtmlResults += `<th scope="row">${counter}</th>`;

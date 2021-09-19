@@ -162,7 +162,7 @@ class App extends Component {
             resultsOutput = <Results
                 key="1"
                 type="is_this_number_prime"
-                content={this.state.is_this_number_prime_results.is_this_number_prime_results}
+                content={this.state.is_this_number_prime_results}
             />
         }
         
