@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import './App.css'
 import Results from './Results'
 import LeftColumn from './LeftColumn'
@@ -6,26 +6,33 @@ import TopNav from './TopNav'
 import Footer from './Footer'
 import NavTabs from './NavTabs'
 
-function App(props) {
-    const [results, setResults] = useState('');
-    const [error, setError] = useState(null);
-    const [params, setParams] = useState([{
-        is_this_number_prime_apiKey: 0,
-        is_this_number_prime_include_explanations: false,
-        is_this_number_prime_include_prime_types_list: false,
-        is_this_number_prime_language: "english",
-        is_this_number_prime_check_number: 0,
-    }]);
+class App extends Component {
 
+    //setup the constructor with the default props and states
+    constructor(props) {
+        super(props)
+        this.state = {            
+            is_this_number_prime_results: [],
+            error: null,
+            params: {
+                is_this_number_prime_apiKey: 0,
+                is_this_number_prime_include_explanations: false,
+                is_this_number_prime_include_prime_types_list: false,
+                is_this_number_prime_language: "english",
+                is_this_number_prime_check_number: 0,
+            }
+        }
+        this.handleIsThisNumberPrimeSearch = this.handleIsThisNumberPrimeSearch.bind(this);
+    }    
     // convert query parameter from an object to a string
-   const formatQueryParams = (params) => {
+    formatQueryParams(params) {
         const queryItems = Object.keys(params)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         return queryItems.join('&')
     }
 
     // if an integer is empty, undefined or null, default it to 0
-    const checkInteger = (inputInteger) => {
+    checkInteger(inputInteger) {
         let outputValue = inputInteger
         if (inputInteger === "") {
             outputValue = 0
@@ -40,7 +47,7 @@ function App(props) {
     }
 
     // if a string is undefined or null, default it to "no details"
-    const checkString = (inputString) => {
+    checkString(inputString) {
         let outputText = inputString
         if (inputString === undefined) {
             outputText = "no details"
@@ -52,7 +59,7 @@ function App(props) {
     }
 
     // if a URL is undefined or null, default it to the root url "/"
-    const checkURL = (inputURL) => {
+    checkURL(inputURL) {
         let outputURL = inputURL
         if (inputURL === undefined) {
             outputURL = "/"
@@ -64,7 +71,7 @@ function App(props) {
     }
 
     // if a URL is undefined or null, default it to the root url "/"
-    const checkEmptyImage = (inputURL) => {
+    checkEmptyImage(inputURL) {
         let outputURL = inputURL
         if (inputURL === undefined) {
             outputURL = "https://legacytaylorsville.com/wp-content/uploads/2015/07/No-Image-Available1.png"
@@ -76,7 +83,7 @@ function App(props) {
     }
 
     //get the input from the user
-    const handleIsThisNumberPrimeSearch = (e) => {
+    handleIsThisNumberPrimeSearch = (e) => {
         e.preventDefault()
 
         //create an object to store the search filters
@@ -95,7 +102,7 @@ function App(props) {
         
 
         //assigning the object from the form data to params in the state
-        setParams({
+        this.setState({
             params: data
         })
 
@@ -114,11 +121,11 @@ function App(props) {
             })
             .then(responseJson => {
                 // console.log(responseJson);
-                let current_is_this_number_prime_results = results
+                let current_is_this_number_prime_results = this.state.is_this_number_prime_results
                 let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
                 // console.log(updated_is_this_number_prime_results);
                 
-                setResults({
+                this.setState({
                     is_this_number_prime_results: current_is_this_number_prime_results,
                     error: null
                 })
@@ -126,23 +133,23 @@ function App(props) {
             })
             .catch(err => {
                 console.log(err);
-                setError({
+                this.setState({
                     error: err
                 })
                 // displayError(err, "error-is-this-number-prime")
             })
     }
 
-    // render() {
+    render() {
 
         //if there is an error message display it
         
-        const errorMessage = error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{error}</strong> </div> : false
+        const errorMessage = this.state.error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{this.state.error}</strong> </div> : false
 
         let resultsOutput = ""
-        if (typeof results == Array){
-            if (results.length !== 0) {
-                resultsOutput = results.map((value, key) => {
+        if (typeof this.state.is_this_number_prime_results == Array){
+            if (this.state.is_this_number_prime_results.length !== 0) {
+                resultsOutput = this.state.is_this_number_prime_results.map((value, key) => {
                     return <Results
                         key={key}
                         type="is_this_number_prime"
@@ -151,11 +158,11 @@ function App(props) {
                 })
             }
         }
-        else if ((typeof results == Object)) {
+        else if ((typeof this.state.is_this_number_prime_results == Object)) {
             resultsOutput = <Results
                 key="1"
                 type="is_this_number_prime"
-                content={results}
+                content={this.state.is_this_number_prime_results}
             />
         }
         
@@ -192,7 +199,7 @@ function App(props) {
                                     <NavTabs / >
                                     <div className="tab-content" id="myTabContent">
                                         <div className="tab-pane fade show active" id="is-this-number-prime" role="tabpanel" aria-labelledby="is-this-number-prime-tab">
-                                            <form onSubmit={handleIsThisNumberPrimeSearch} className="form-horizontal form-label-left is-this-number-prime">
+                                            <form onSubmit={this.handleIsThisNumberPrimeSearch} className="form-horizontal form-label-left is-this-number-prime">
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is_this_number_prime_apiKey">
                                                         apiKey
@@ -784,7 +791,7 @@ function App(props) {
             <Footer />
         </div>
         )
-    
+    }
 }
 
 export default App
