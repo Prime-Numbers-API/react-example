@@ -114,8 +114,8 @@ function App(props) {
             })
             .then(responseJson => {
                 // console.log(responseJson);
-                let current_is_this_number_prime_results = results
-                let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
+                let current_is_this_number_prime_results = responseJson
+               // let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
                 // console.log(updated_is_this_number_prime_results);
                 
                 setResults({
