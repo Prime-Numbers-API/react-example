@@ -107,20 +107,23 @@ const App = (props) => {
         }
 
         //check if the state is populated with the search params data
-        console.log(data)
+        // console.log(data)
         
 
         //assigning the object from the form data to params in the state
         setState(prevState => ({
-            ...state,
-            params: data
+            ...prevState,
+            params: {
+                ...prevState.params,
+                params: data
+            }
         }))
 
 
         let is_this_number_prime_api_url = `http://api.prime-numbers.io/is-this-number-prime.php?key=${data.is_this_number_prime_apiKey}&number=${data.is_this_number_prime_check_number}&include_explanations=${data.is_this_number_prime_include_explanations}&include_prime_types_list=${data.is_this_number_prime_include_prime_types_list}&language=${data.is_this_number_prime_language}`
 
-        console.log(is_this_number_prime_api_url)
-        console.log(state.params)
+        // console.log(is_this_number_prime_api_url)
+        console.log("state.params: ", state.params)
 
         //using the url and parameters above make the api call
         fetch(is_this_number_prime_api_url)
@@ -131,25 +134,28 @@ const App = (props) => {
                 return response.json().then(response => { throw new Error(response.error) })
             })
             .then(responseJson => {
-                console.log(responseJson);
+                // console.log(responseJson);
                 const results = responseJson;
-                console.log(results);
+                // console.log(results);
                 // let current_is_this_number_prime_results = responseJson
                // let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
                 // console.log(updated_is_this_number_prime_results);
                 setState(prevState => ({
                     // is_this_number_prime_results: current_is_this_number_prime_results,
-                    ...state,
-                    results: results,
+                    results: {
+                        ...prevState.results,
+                        results: results
+                    },
+                    ...prevState
                     // error: null
                 }))
-                console.log(state.results);
+                console.log("state results: ", state.results);
             })
             .catch(err => {
                 const error = err;
                 console.log(err);
                 setState(prevState => ({
-                    ...state,
+                    ...prevState,
                     error: error
                 }))
                 // displayError(err, "error-is-this-number-prime")
@@ -161,6 +167,9 @@ const App = (props) => {
         //if there is an error message display it
         
         const errorMessage = state.error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{state.error}</strong> </div> : false
+
+        console.log("errorMessage: ", errorMessage)
+        console.log("state error: ", state.error)
 
         let resultsOutput = ""
         if (typeof state.results == Array){
@@ -181,7 +190,7 @@ const App = (props) => {
                 content={state.results}
             />
         }
-        
+        console.log("resultsOutput: ", resultsOutput)
         
 
 
