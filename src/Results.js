@@ -5,7 +5,7 @@ class Results extends React.Component {
 
     is_this_number_prime_api_results_details(incomingData, parentKey) {
 
-            // console.log(incomingData);
+            console.log(incomingData);
 
             //create an empty variable to store a new list item for each result
             let buildHtmlResults = '<table class="table">';

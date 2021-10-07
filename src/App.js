@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 import Results from './Results'
 import LeftColumn from './LeftColumn'
@@ -6,16 +6,32 @@ import TopNav from './TopNav'
 import Footer from './Footer'
 import NavTabs from './NavTabs'
 
-function App(props) {
-    const [results, setResults] = useState('');
-    const [error, setError] = useState(null);
-    const [params, setParams] = useState([{
-        is_this_number_prime_apiKey: 0,
-        is_this_number_prime_include_explanations: false,
-        is_this_number_prime_include_prime_types_list: false,
-        is_this_number_prime_language: "english",
-        is_this_number_prime_check_number: 0,
-    }]);
+const App = (props) => {
+    const [state, setState] = useState({
+        results: {},
+        error: null,
+        params: {
+            is_this_number_prime_apiKey: 0,
+            is_this_number_prime_include_explanations: false,
+            is_this_number_prime_include_prime_types_list: false,
+            is_this_number_prime_language: "english",
+            is_this_number_prime_check_number: 0
+        }
+    })
+    // const [results, setResults] = useState({});
+    // const [error, setError] = useState(null);
+    // const [params, setParams] = useState([{
+    //     is_this_number_prime_apiKey: 0,
+    //     is_this_number_prime_include_explanations: false,
+    //     is_this_number_prime_include_prime_types_list: false,
+    //     is_this_number_prime_language: "english",
+    //     is_this_number_prime_check_number: 0,
+    // }]);
+
+    //i want an empty results on first render, and when it rerenders, I want new results passed to state. Then I want the Results.js statements to run, which will update the DOM with the results
+   
+    //If I just do onSubmit={() => setParams(e?)} then I can use a useEffect to run my params logic and convert that to a URL which can update results?
+    //I need to handle the form submission and run setParams to update params, then I want to convert that to the URL and use setResults 
 
     // convert query parameter from an object to a string
    const formatQueryParams = (params) => {
@@ -95,14 +111,16 @@ function App(props) {
         
 
         //assigning the object from the form data to params in the state
-        setParams({
+        setState(prevState => ({
+            ...state,
             params: data
-        })
+        }))
 
 
         let is_this_number_prime_api_url = `http://api.prime-numbers.io/is-this-number-prime.php?key=${data.is_this_number_prime_apiKey}&number=${data.is_this_number_prime_check_number}&include_explanations=${data.is_this_number_prime_include_explanations}&include_prime_types_list=${data.is_this_number_prime_include_prime_types_list}&language=${data.is_this_number_prime_language}`
 
         console.log(is_this_number_prime_api_url)
+        console.log(state.params)
 
         //using the url and parameters above make the api call
         fetch(is_this_number_prime_api_url)
@@ -113,22 +131,27 @@ function App(props) {
                 return response.json().then(response => { throw new Error(response.error) })
             })
             .then(responseJson => {
-                // console.log(responseJson);
-                let current_is_this_number_prime_results = responseJson
+                console.log(responseJson);
+                const results = responseJson;
+                console.log(results);
+                // let current_is_this_number_prime_results = responseJson
                // let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
                 // console.log(updated_is_this_number_prime_results);
-                
-                setResults({
-                    is_this_number_prime_results: current_is_this_number_prime_results,
-                    error: null
-                })
-                // console.log(this.state);
+                setState(prevState => ({
+                    // is_this_number_prime_results: current_is_this_number_prime_results,
+                    ...state,
+                    results: results,
+                    // error: null
+                }))
+                console.log(state.results);
             })
             .catch(err => {
+                const error = err;
                 console.log(err);
-                setError({
-                    error: err
-                })
+                setState(prevState => ({
+                    ...state,
+                    error: error
+                }))
                 // displayError(err, "error-is-this-number-prime")
             })
     }
@@ -137,12 +160,12 @@ function App(props) {
 
         //if there is an error message display it
         
-        const errorMessage = error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{error}</strong> </div> : false
+        const errorMessage = state.error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{state.error}</strong> </div> : false
 
         let resultsOutput = ""
-        if (typeof results == Array){
-            if (results.length !== 0) {
-                resultsOutput = results.map((value, key) => {
+        if (typeof state.results == Array){
+            if (state.results.length !== 0) {
+                resultsOutput = state.results.map((value, key) => {
                     return <Results
                         key={key}
                         type="is_this_number_prime"
@@ -151,11 +174,11 @@ function App(props) {
                 })
             }
         }
-        else if ((typeof results == Object)) {
+        else if ((typeof state.results == Object)) {
             resultsOutput = <Results
                 key="1"
                 type="is_this_number_prime"
-                content={results}
+                content={state.results}
             />
         }
         
@@ -192,6 +215,7 @@ function App(props) {
                                     <NavTabs / >
                                     <div className="tab-content" id="myTabContent">
                                         <div className="tab-pane fade show active" id="is-this-number-prime" role="tabpanel" aria-labelledby="is-this-number-prime-tab">
+                                        {/* so I'm thinking, in each input, onChange={e => setMessage(e.target.value)} */}
                                             <form onSubmit={handleIsThisNumberPrimeSearch} className="form-horizontal form-label-left is-this-number-prime">
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is_this_number_prime_apiKey">
