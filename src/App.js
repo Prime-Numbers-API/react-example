@@ -7,26 +7,27 @@ import Footer from './Footer'
 import NavTabs from './NavTabs'
 
 const App = (props) => {
-    const [state, setState] = useState({
-        results: {},
-        error: null,
-        params: {
-            is_this_number_prime_apiKey: 0,
-            is_this_number_prime_include_explanations: false,
-            is_this_number_prime_include_prime_types_list: false,
-            is_this_number_prime_language: "english",
-            is_this_number_prime_check_number: 0
-        }
-    })
-    // const [results, setResults] = useState({});
-    // const [error, setError] = useState(null);
-    // const [params, setParams] = useState([{
-    //     is_this_number_prime_apiKey: 0,
-    //     is_this_number_prime_include_explanations: false,
-    //     is_this_number_prime_include_prime_types_list: false,
-    //     is_this_number_prime_language: "english",
-    //     is_this_number_prime_check_number: 0,
-    // }]);
+    // const [state, setState] = useState({
+    //     results: {},
+    //     error: null,
+    //     params: {
+    //         is_this_number_prime_apiKey: 0,
+    //         is_this_number_prime_include_explanations: false,
+    //         is_this_number_prime_include_prime_types_list: false,
+    //         is_this_number_prime_language: "english",
+    //         is_this_number_prime_check_number: 0
+    //     }
+    // })
+    //PROBLEM, when it first renders, state isn't being instantiated, until a re-render. I THINK I need "Lazy Initial State"
+    const [results, setResults] = useState({});
+    const [error, setError] = useState(null);
+    const [params, setParams] = useState([{
+        is_this_number_prime_apiKey: 0,
+        is_this_number_prime_include_explanations: false,
+        is_this_number_prime_include_prime_types_list: false,
+        is_this_number_prime_language: "english",
+        is_this_number_prime_check_number: 0,
+    }]);
 
     //i want an empty results on first render, and when it rerenders, I want new results passed to state. Then I want the Results.js statements to run, which will update the DOM with the results
    
@@ -105,25 +106,24 @@ const App = (props) => {
         for (let value of formData) {
             data[value[0]] = value[1]
         }
-
+        console.log("data before passing to state: ", data)
+        console.log("data api key: ", data.is_this_number_prime_apiKey)
         //check if the state is populated with the search params data
-        // console.log(data)
+        console.log("params before setState: ", params)
         
 
         //assigning the object from the form data to params in the state
-        setState(prevState => ({
-            ...prevState,
-            params: {
-                ...prevState.params,
-                params: data
-            }
+        setParams(prevState => ({
+            ...prevState, //shallow copy of level 0 (results, error, and params) but ONLY REFERENCES the results and params key/value pairs
+            params: data
+            
         }))
-
+        
+        console.log("state.params after setState: ", params)
 
         let is_this_number_prime_api_url = `http://api.prime-numbers.io/is-this-number-prime.php?key=${data.is_this_number_prime_apiKey}&number=${data.is_this_number_prime_check_number}&include_explanations=${data.is_this_number_prime_include_explanations}&include_prime_types_list=${data.is_this_number_prime_include_prime_types_list}&language=${data.is_this_number_prime_language}`
 
         // console.log(is_this_number_prime_api_url)
-        console.log("state.params: ", state.params)
 
         //using the url and parameters above make the api call
         fetch(is_this_number_prime_api_url)
@@ -135,28 +135,23 @@ const App = (props) => {
             })
             .then(responseJson => {
                 // console.log(responseJson);
-                const results = responseJson;
+                const responseResults = responseJson;
                 // console.log(results);
                 // let current_is_this_number_prime_results = responseJson
                // let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
                 // console.log(updated_is_this_number_prime_results);
-                setState(prevState => ({
+                setResults(prevState => ({
                     // is_this_number_prime_results: current_is_this_number_prime_results,
-                    results: {
-                        ...prevState.results,
-                        results: results
-                    },
-                    ...prevState
+                    results: responseResults
                     // error: null
                 }))
-                console.log("state results: ", state.results);
+                console.log("state results: ", results);
             })
             .catch(err => {
-                const error = err;
+                const responseErr = err;
                 console.log(err);
-                setState(prevState => ({
-                    ...prevState,
-                    error: error
+                setError(prevState => ({
+                    error: responseErr
                 }))
                 // displayError(err, "error-is-this-number-prime")
             })
@@ -166,15 +161,15 @@ const App = (props) => {
 
         //if there is an error message display it
         
-        const errorMessage = state.error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{state.error}</strong> </div> : false
+        const errorMessage = error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{error}</strong> </div> : false
 
         console.log("errorMessage: ", errorMessage)
-        console.log("state error: ", state.error)
+        console.log("state error: ", error)
 
         let resultsOutput = ""
-        if (typeof state.results == Array){
-            if (state.results.length !== 0) {
-                resultsOutput = state.results.map((value, key) => {
+        if (typeof results == Array){
+            if (results.length !== 0) {
+                resultsOutput = results.map((value, key) => {
                     return <Results
                         key={key}
                         type="is_this_number_prime"
@@ -183,11 +178,11 @@ const App = (props) => {
                 })
             }
         }
-        else if ((typeof state.results == Object)) {
+        else if ((typeof results == Object)) {
             resultsOutput = <Results
                 key="1"
                 type="is_this_number_prime"
-                content={state.results}
+                content={results}
             />
         }
         console.log("resultsOutput: ", resultsOutput)
