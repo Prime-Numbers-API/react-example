@@ -18,7 +18,7 @@ const App = (props) => {
     //         is_this_number_prime_check_number: 0
     //     }
     // })
-    //PROBLEM, when it first renders, state isn't being instantiated, until a re-render. I THINK I need "Lazy Initial State"
+
     const [results, setResults] = useState({});
     const [error, setError] = useState(null);
     const [params, setParams] = useState([{
@@ -28,11 +28,7 @@ const App = (props) => {
         is_this_number_prime_language: "english",
         is_this_number_prime_check_number: 0,
     }]);
-
-    //i want an empty results on first render, and when it rerenders, I want new results passed to state. Then I want the Results.js statements to run, which will update the DOM with the results
-   
-    //If I just do onSubmit={() => setParams(e?)} then I can use a useEffect to run my params logic and convert that to a URL which can update results?
-    //I need to handle the form submission and run setParams to update params, then I want to convert that to the URL and use setResults 
+    console.log(params)
 
     // convert query parameter from an object to a string
    const formatQueryParams = (params) => {
@@ -106,56 +102,66 @@ const App = (props) => {
         for (let value of formData) {
             data[value[0]] = value[1]
         }
-        console.log("data before passing to state: ", data)
-        console.log("data api key: ", data.is_this_number_prime_apiKey)
+
         //check if the state is populated with the search params data
-        console.log("params before setState: ", params)
+        //console.log("data before passing to state: ", data)
+        //console.log("params before setState: ", params)
         
 
         //assigning the object from the form data to params in the state
         setParams(prevState => ({
-            ...prevState, //shallow copy of level 0 (results, error, and params) but ONLY REFERENCES the results and params key/value pairs
+            ...prevState, //shallow copy of level 0 (params) but ONLY REFERENCES the key/value pairs
             params: data
             
         }))
-        
-        console.log("state.params after setState: ", params)
 
         let is_this_number_prime_api_url = `http://api.prime-numbers.io/is-this-number-prime.php?key=${data.is_this_number_prime_apiKey}&number=${data.is_this_number_prime_check_number}&include_explanations=${data.is_this_number_prime_include_explanations}&include_prime_types_list=${data.is_this_number_prime_include_prime_types_list}&language=${data.is_this_number_prime_language}`
 
         // console.log(is_this_number_prime_api_url)
-
+        
         //using the url and parameters above make the api call
-        fetch(is_this_number_prime_api_url)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                return response.json().then(response => { throw new Error(response.error) })
-            })
-            .then(responseJson => {
-                // console.log(responseJson);
-                const responseResults = responseJson;
-                // console.log(results);
-                // let current_is_this_number_prime_results = responseJson
-               // let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
-                // console.log(updated_is_this_number_prime_results);
+        const fetchData = async (is_this_number_prime_api_url) => {
+                const response = await fetch(is_this_number_prime_api_url)
+                const data = await response.json();
                 setResults(prevState => ({
-                    // is_this_number_prime_results: current_is_this_number_prime_results,
-                    results: responseResults
-                    // error: null
+                    ...prevState,
+                    results: data
                 }))
-                console.log("state results: ", results);
-            })
-            .catch(err => {
-                const responseErr = err;
-                console.log(err);
-                setError(prevState => ({
-                    error: responseErr
-                }))
-                // displayError(err, "error-is-this-number-prime")
-            })
-    }
+                // .then(response => {
+                //     if (response.ok) {
+                //         return response.json();
+                //     }
+                //     return response.json().then(response => { throw new Error(response.error) })
+                // })
+                // .then(responseJson => {
+                //     // console.log(responseJson);
+                //     const responseResults = responseJson;
+                //     // console.log(results);
+                //     // let current_is_this_number_prime_results = responseJson
+                // // let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
+                //     // console.log(updated_is_this_number_prime_results);
+                //     setResults(prevState => ({
+                //         // is_this_number_prime_results: current_is_this_number_prime_results,
+                //         ...prevState,
+                //         results: responseResults
+                //         // error: null
+                //     }))
+                // })
+                
+                // .catch(err => {
+                //     const responseErr = err;
+                //     console.log(err);
+                //     setError(prevState => ({
+                //         error: responseErr
+                //     }))
+                //     // displayError(err, "error-is-this-number-prime")
+                // })
+            }         
+            return fetchData(is_this_number_prime_api_url)  
+        }
+        
+    console.log("state results: ", results);
+    console.log("state.params after setState: ", params)
 
     // render() {
 
