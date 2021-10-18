@@ -22,7 +22,7 @@ class Results extends React.Component {
             }
             buildHtmlResults += '</table>';
 
-            // console.log(buildHtmlResults);
+            console.log(buildHtmlResults);
 
             return buildHtmlResults;
         };
@@ -55,9 +55,9 @@ class Results extends React.Component {
 
         
         return (
-            <>
+            <div>
                 {buildHtmlResults}
-            </>
+            </div>
         )
     }
 

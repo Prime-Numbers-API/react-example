@@ -243,7 +243,6 @@ const App = (props) => {
                                     <NavTabs / >
                                     <div className="tab-content" id="myTabContent">
                                         <div className="tab-pane fade show active" id="is-this-number-prime" role="tabpanel" aria-labelledby="is-this-number-prime-tab">
-                                        {/* so I'm thinking, in each input, onChange={e => setMessage(e.target.value)} */}
                                             <form onSubmit={handleIsThisNumberPrimeSearch} className="form-horizontal form-label-left is-this-number-prime">
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="is_this_number_prime_apiKey">
@@ -312,7 +311,6 @@ const App = (props) => {
                                                 </div>
                                             </form>
                                             {errorMessage}
-                                            {resultsOutput}
                                             <div className="x_title display-results results-is-this-number-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -341,6 +339,7 @@ const App = (props) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="results-is-this-number-prime-show">
+                                                        {resultsOutput}
 
                                                     </tbody>
                                                 </table>
