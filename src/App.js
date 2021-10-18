@@ -156,9 +156,11 @@ const App = (props) => {
                 //     }))
                 //     // displayError(err, "error-is-this-number-prime")
                 // })
+                handleResults();
             }         
-            return fetchData(is_this_number_prime_api_url)  
-        }
+            return fetchData(is_this_number_prime_api_url);
+         
+    }
         
     console.log("state results: ", results);
     console.log("state.params after setState: ", params)
@@ -173,18 +175,29 @@ const App = (props) => {
         console.log("state error: ", error)
 
         let resultsOutput = ""
-        if (typeof results == Array){
-            if (results.length !== 0) {
-                resultsOutput = results.map((value, key) => {
-                    return <Results
-                        key={key}
-                        type="is_this_number_prime"
-                        content={value.is_this_number_prime_results}
-                    />
-                })
-            }
-        }
-        else if ((typeof results == Object)) {
+
+    const handleResults = () => {
+        // if (typeof results == Array){
+        //     if (results.length !== 0) {
+        //         resultsOutput = results.map((value, key) => {
+        //             return <Results
+        //                 key={key}
+        //                 type="is_this_number_prime"
+        //                 content={value.is_this_number_prime_results}
+        //             />
+        //         })
+        //     }
+        // }
+        // if ((typeof results == Object)) {
+        //     console.log("this is running");
+        //     resultsOutput = <Results
+        //         key="1"
+        //         type="is_this_number_prime"
+        //         content={results}
+        //     />
+        // }
+        if (results) {
+            console.log("this is running");
             resultsOutput = <Results
                 key="1"
                 type="is_this_number_prime"
@@ -192,6 +205,7 @@ const App = (props) => {
             />
         }
         console.log("resultsOutput: ", resultsOutput)
+    }
         
 
 
