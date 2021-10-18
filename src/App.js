@@ -28,7 +28,7 @@ const App = (props) => {
         is_this_number_prime_language: "english",
         is_this_number_prime_check_number: 0,
     }]);
-    console.log(params)
+    // console.log(params)
 
     // convert query parameter from an object to a string
    const formatQueryParams = (params) => {
@@ -156,14 +156,14 @@ const App = (props) => {
                 //     }))
                 //     // displayError(err, "error-is-this-number-prime")
                 // })
-                handleResults();
+                handleResults(data);
             }         
             return fetchData(is_this_number_prime_api_url);
          
     }
         
-    console.log("state results: ", results);
-    console.log("state.params after setState: ", params)
+    // console.log("state results: ", results);
+    // console.log("state.params after setState: ", params);
 
     // render() {
 
@@ -171,12 +171,12 @@ const App = (props) => {
         
         const errorMessage = error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{error}</strong> </div> : false
 
-        console.log("errorMessage: ", errorMessage)
-        console.log("state error: ", error)
+        // console.log("errorMessage: ", errorMessage)
+        // console.log("state error: ", error)
 
         let resultsOutput = ""
 
-    const handleResults = () => {
+    const handleResults = (data) => {
         // if (typeof results == Array){
         //     if (results.length !== 0) {
         //         resultsOutput = results.map((value, key) => {
@@ -196,12 +196,12 @@ const App = (props) => {
         //         content={results}
         //     />
         // }
-        if (results) {
-            console.log("this is running");
+        if (data) {
+            // console.log("this is running");
             resultsOutput = <Results
                 key="1"
                 type="is_this_number_prime"
-                content={results}
+                content={data}
             />
         }
         console.log("resultsOutput: ", resultsOutput)

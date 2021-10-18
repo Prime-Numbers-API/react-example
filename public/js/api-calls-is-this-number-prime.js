@@ -52,6 +52,7 @@ function is_this_number_prime_api_results(incomingData) {
     console.log(incomingData);
 
     //create an empty variable to store a new list item for each result
+    let dataOutput = "";
     let buildHtmlResults = "";
     let counter = 1;
     for (let key in incomingData) {
