@@ -156,7 +156,7 @@ const App = (props) => {
                 //     }))
                 //     // displayError(err, "error-is-this-number-prime")
                 // })
-                handleResults(data);
+                // handleResults(data);
             }         
             return fetchData(is_this_number_prime_api_url);
          
@@ -174,38 +174,42 @@ const App = (props) => {
         // console.log("errorMessage: ", errorMessage)
         // console.log("state error: ", error)
 
-        let resultsOutput = ""
+        const resultsOutput = results ? <Results
+        key="1"
+        type="is_this_number_prime"
+        content={results}
+    /> : "";
 
-    const handleResults = (data) => {
-        // if (typeof results == Array){
-        //     if (results.length !== 0) {
-        //         resultsOutput = results.map((value, key) => {
-        //             return <Results
-        //                 key={key}
-        //                 type="is_this_number_prime"
-        //                 content={value.is_this_number_prime_results}
-        //             />
-        //         })
-        //     }
-        // }
-        // if ((typeof results == Object)) {
-        //     console.log("this is running");
-        //     resultsOutput = <Results
-        //         key="1"
-        //         type="is_this_number_prime"
-        //         content={results}
-        //     />
-        // }
-        if (data) {
-            // console.log("this is running");
-            resultsOutput = <Results
-                key="1"
-                type="is_this_number_prime"
-                content={data}
-            />
-        }
-        console.log("resultsOutput: ", resultsOutput)
-    }
+    // const handleResults = (data) => {
+    //     // if (typeof results == Array){
+    //     //     if (results.length !== 0) {
+    //     //         resultsOutput = results.map((value, key) => {
+    //     //             return <Results
+    //     //                 key={key}
+    //     //                 type="is_this_number_prime"
+    //     //                 content={value.is_this_number_prime_results}
+    //     //             />
+    //     //         })
+    //     //     }
+    //     // }
+    //     // if ((typeof results == Object)) {
+    //     //     console.log("this is running");
+    //     //     resultsOutput = <Results
+    //     //         key="1"
+    //     //         type="is_this_number_prime"
+    //     //         content={results}
+    //     //     />
+    //     // }
+    //     if (data) {
+    //         // console.log("this is running");
+    //         resultsOutput = <Results
+    //             key="1"
+    //             type="is_this_number_prime"
+    //             content={data}
+    //         />
+    //     }
+    //     console.log("resultsOutput: ", resultsOutput)
+    // }
         
 
 
