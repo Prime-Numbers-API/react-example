@@ -55,9 +55,9 @@ class Results extends React.Component {
 
         
         return (
-            <div>
-                {buildHtmlResults}
-            </div>
+            <>
+                <div dangerouslySetInnerHTML={{__html: buildHtmlResults }} />
+            </>
         )
     }
 
