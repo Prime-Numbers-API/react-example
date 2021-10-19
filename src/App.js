@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './App.css'
 import IsThisNumberPrimeResults from './IsThisNumberPrimeResults'
 import GetRandomPrimeResults from './GetRandomPrime'
+import GetAllPrimesBetweenTwoNumbersResults from './GetAllPrimesBetweenTwoNumbersResults'
 import LeftColumn from './LeftColumn'
 import TopNav from './TopNav'
 import Footer from './Footer'
@@ -150,6 +151,51 @@ const App = (props) => {
             return fetchData(get_random_prime_api_url);
          
     }
+
+
+    const handleGetAllPrimesBetweenTwoNumbersSearch = (e) => {
+        e.preventDefault()
+
+        //create an object to store the search filters
+        const data = {}
+
+        //get all the from data from the form component
+        const formData = new FormData(e.target)
+
+        //for each of the keys in form data populate it with form value
+        for (let value of formData) {
+            data[value[0]] = value[1]
+        }
+
+        //check if the state is populated with the search params data
+        //console.log("data before passing to state: ", data)
+        //console.log("params before setState: ", params)
+        
+
+        //assigning the object from the form data to params in the state
+        setParams(prevState => ({
+            ...prevState, 
+            params: data
+            
+        }))
+        console.log(data)
+        let get_all_primes_between_two_numbers_api_url = `http://api.prime-numbers.io/get-all-primes-between-two-numbers.php?key=${data.get_all_primes_between_two_numbers_apiKey}&start=${data.get_all_primes_between_two_numbers_start}&end=${data.get_all_primes_between_two_numbers_end}&include_explanations=${data.get_all_primes_between_two_numbers_include_explanations}&include_prime_types_list=${data.get_all_primes_between_two_numbers_include_prime_types_list}&language=${data.get_all_primes_between_two_numbers_language}`
+
+        console.log(get_all_primes_between_two_numbers_api_url)
+        
+        //using the url and parameters above make the api call
+        const fetchData = async (get_all_primes_between_two_numbers_api_url) => {
+                const response = await fetch(get_all_primes_between_two_numbers_api_url)
+                const data = await response.json();
+                setResults(prevState => ({
+                    ...prevState,
+                    results: data
+                }))
+                
+            }         
+            return fetchData(get_all_primes_between_two_numbers_api_url);
+         
+    }
         
     // console.log("state results: ", results);
     console.log("state.params after setState: ", params);
@@ -168,6 +214,12 @@ const App = (props) => {
     /> : "";
 
         const getRandomPrimeResultsOutput = results ? <GetRandomPrimeResults
+        key="1"
+        type="is_this_number_prime"
+        content={results}
+    /> : "";
+
+        const getAllPrimesBetweenTwoNumbersResultsOutput = results ? <GetAllPrimesBetweenTwoNumbersResults
         key="1"
         type="is_this_number_prime"
         content={results}
@@ -434,41 +486,41 @@ const App = (props) => {
                                             
                                         </div>
                                         <div className="tab-pane fade" id="get-all-primes-between-two-numbers" role="tabpanel" aria-labelledby="get-all-primes-between-two-numbers-tab">
-                                            <form className="form-horizontal form-label-left get-all-primes-between-two-numbers">
+                                            <form onSubmit={handleGetAllPrimesBetweenTwoNumbersSearch} className="form-horizontal form-label-left get-all-primes-between-two-numbers">
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-all-primes-between-two-numbers-apiKey">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_all_primes_between_two_numbers_apiKey">
                                                         apiKey
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get-all-primes-between-two-numbers-apiKey" name="get-all-primes-between-two-numbers-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get_all_primes_between_two_numbers_apiKey" name="get_all_primes_between_two_numbers_apiKey" required="required" className="form-control  " defaultValue="123" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-all-primes-between-two-numbers-start">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_all_primes_between_two_numbers_start">
                                                         start
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="number" id="get-all-primes-between-two-numbers-start" name="get-all-primes-between-two-numbers-start" required="required" className="form-control " defaultValue="330" />
+                                                        <input type="number" id="get_all_primes_between_two_numbers_start" name="get_all_primes_between_two_numbers_start" required="required" className="form-control " defaultValue="330" />
                                                         <br />(Required if the end is specified) the number from which the process will start (needs to be smaller than the end)
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-all-primes-between-two-numbers-end">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_all_primes_between_two_numbers_end">
                                                         end
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="number" id="get-all-primes-between-two-numbers-end" name="get-all-primes-between-two-numbers-end" required="required" className="form-control " defaultValue="1000" />
+                                                        <input type="number" id="get_all_primes_between_two_numbers_end" name="get_all_primes_between_two_numbers_end" required="required" className="form-control " defaultValue="1000" />
                                                         <br />(Required if the start is specified) the number to which the process will end (needs to be larger than the start)
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-all-primes-between-two-numbers-include-explanations" name="get-all-primes-between-two-numbers-include-explanations" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_all_primes_between_two_numbers_include_explanations" name="get_all_primes_between_two_numbers_include_explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -478,7 +530,7 @@ const App = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-all-primes-between-two-numbers-include-prime-types-list" name="get-all-primes-between-two-numbers-include-prime-types-list" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_all_primes_between_two_numbers_include_prime_types_list" name="get_all_primes_between_two_numbers_include_prime_types_list" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -490,7 +542,7 @@ const App = (props) => {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-all-primes-between-two-numbers-language" name="get-all-primes-between-two-numbers-language"  className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_all_primes_between_two_numbers_language" name="get_all_primes_between_two_numbers_language"  className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -546,7 +598,7 @@ const App = (props) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="results-get-all-primes-between-two-numbers-show">
-
+                                                        {getAllPrimesBetweenTwoNumbersResultsOutput}
                                                     </tbody>
                                                 </table>
 
