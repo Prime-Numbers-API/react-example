@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import IsThisNumberPrimeResults from './IsThisNumberPrimeResults'
 import GetRandomPrimeResults from './GetRandomPrime'
@@ -30,64 +30,6 @@ const App = (props) => {
         // is_this_number_prime_check_number: 0,
     }]);
     // console.log(params)
-
-    // convert query parameter from an object to a string
-   const formatQueryParams = (params) => {
-        const queryItems = Object.keys(params)
-            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        return queryItems.join('&')
-    }
-
-    // if an integer is empty, undefined or null, default it to 0
-    const checkInteger = (inputInteger) => {
-        let outputValue = inputInteger
-        if (inputInteger === "") {
-            outputValue = 0
-        }
-        if (inputInteger === undefined) {
-            outputValue = 0
-        }
-        if (inputInteger == null) {
-            outputValue = 0
-        }
-        return outputValue
-    }
-
-    // if a string is undefined or null, default it to "no details"
-    const checkString = (inputString) => {
-        let outputText = inputString
-        if (inputString === undefined) {
-            outputText = "no details"
-        }
-        if (inputString == null) {
-            outputText = "no details"
-        }
-        return outputText
-    }
-
-    // if a URL is undefined or null, default it to the root url "/"
-    const checkURL = (inputURL) => {
-        let outputURL = inputURL
-        if (inputURL === undefined) {
-            outputURL = "/"
-        }
-        if (inputURL == null) {
-            outputURL = "/"
-        }
-        return outputURL
-    }
-
-    // if a URL is undefined or null, default it to the root url "/"
-    const checkEmptyImage = (inputURL) => {
-        let outputURL = inputURL
-        if (inputURL === undefined) {
-            outputURL = "https://legacytaylorsville.com/wp-content/uploads/2015/07/No-Image-Available1.png"
-        }
-        if (inputURL == null) {
-            outputURL = "https://legacytaylorsville.com/wp-content/uploads/2015/07/No-Image-Available1.png"
-        }
-        return outputURL
-    }
 
     //get the input from the user
     const handleIsThisNumberPrimeSearch = (e) => {
