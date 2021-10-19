@@ -215,13 +215,13 @@ const App = (props) => {
 
         const getRandomPrimeResultsOutput = results ? <GetRandomPrimeResults
         key="1"
-        type="is_this_number_prime"
+        type="get_random_prime"
         content={results}
     /> : "";
 
         const getAllPrimesBetweenTwoNumbersResultsOutput = results ? <GetAllPrimesBetweenTwoNumbersResults
         key="1"
-        type="is_this_number_prime"
+        type="get_all_primes_between_two_numbers"
         content={results}
     /> : "";
 
