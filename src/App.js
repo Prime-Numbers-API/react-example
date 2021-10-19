@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import Results from './Results'
+import IsThisNumberPrimeResults from './IsThisNumberPrimeResults'
+import GetRandomPrimeResults from './GetRandomPrime'
 import LeftColumn from './LeftColumn'
 import TopNav from './TopNav'
 import Footer from './Footer'
@@ -22,11 +23,11 @@ const App = (props) => {
     const [results, setResults] = useState({});
     const [error, setError] = useState(null);
     const [params, setParams] = useState([{
-        is_this_number_prime_apiKey: 0,
-        is_this_number_prime_include_explanations: false,
-        is_this_number_prime_include_prime_types_list: false,
-        is_this_number_prime_language: "english",
-        is_this_number_prime_check_number: 0,
+        // is_this_number_prime_apiKey: 0,
+        // is_this_number_prime_include_explanations: false,
+        // is_this_number_prime_include_prime_types_list: false,
+        // is_this_number_prime_language: "english",
+        // is_this_number_prime_check_number: 0,
     }]);
     // console.log(params)
 
@@ -161,11 +162,55 @@ const App = (props) => {
             return fetchData(is_this_number_prime_api_url);
          
     }
+
+
+    
+    const handleGetRandomPrimeSearch = (e) => {
+        e.preventDefault()
+
+        //create an object to store the search filters
+        const data = {}
+
+        //get all the from data from the form component
+        const formData = new FormData(e.target)
+
+        //for each of the keys in form data populate it with form value
+        for (let value of formData) {
+            data[value[0]] = value[1]
+        }
+
+        //check if the state is populated with the search params data
+        //console.log("data before passing to state: ", data)
+        //console.log("params before setState: ", params)
+        
+
+        //assigning the object from the form data to params in the state
+        setParams(prevState => ({
+            ...prevState, 
+            params: data
+            
+        }))
+        console.log(data)
+        let get_random_prime_api_url = `http://api.prime-numbers.io/get-random-prime.php?key=${data.get_random_prime_apiKey}&start=${data.get_random_prime_start}&end=${data.get_random_prime_end}&include_explanations=${data.get_random_prime_include_explanations}&include_prime_types_list=${data.get_random_prime_include_prime_types_list}&language=${data.get_random_prime_language}`
+
+        console.log(get_random_prime_api_url)
+        
+        //using the url and parameters above make the api call
+        const fetchData = async (get_random_prime_api_url) => {
+                const response = await fetch(get_random_prime_api_url)
+                const data = await response.json();
+                setResults(prevState => ({
+                    ...prevState,
+                    results: data
+                }))
+                
+            }         
+            return fetchData(get_random_prime_api_url);
+         
+    }
         
     // console.log("state results: ", results);
-    // console.log("state.params after setState: ", params);
-
-    // render() {
+    console.log("state.params after setState: ", params);
 
         //if there is an error message display it
         
@@ -174,42 +219,19 @@ const App = (props) => {
         // console.log("errorMessage: ", errorMessage)
         // console.log("state error: ", error)
 
-        const resultsOutput = results ? <Results
+        const isThisNumberPrimeResultsOutput = results ? <IsThisNumberPrimeResults
         key="1"
         type="is_this_number_prime"
         content={results}
     /> : "";
 
-    // const handleResults = (data) => {
-    //     // if (typeof results == Array){
-    //     //     if (results.length !== 0) {
-    //     //         resultsOutput = results.map((value, key) => {
-    //     //             return <Results
-    //     //                 key={key}
-    //     //                 type="is_this_number_prime"
-    //     //                 content={value.is_this_number_prime_results}
-    //     //             />
-    //     //         })
-    //     //     }
-    //     // }
-    //     // if ((typeof results == Object)) {
-    //     //     console.log("this is running");
-    //     //     resultsOutput = <Results
-    //     //         key="1"
-    //     //         type="is_this_number_prime"
-    //     //         content={results}
-    //     //     />
-    //     // }
-    //     if (data) {
-    //         // console.log("this is running");
-    //         resultsOutput = <Results
-    //             key="1"
-    //             type="is_this_number_prime"
-    //             content={data}
-    //         />
-    //     }
-    //     console.log("resultsOutput: ", resultsOutput)
-    // }
+        const getRandomPrimeResultsOutput = results ? <GetRandomPrimeResults
+        key="1"
+        type="is_this_number_prime"
+        content={results}
+    /> : "";
+
+    
         
 
 
@@ -339,7 +361,7 @@ const App = (props) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="results-is-this-number-prime-show">
-                                                        {resultsOutput}
+                                                        {isThisNumberPrimeResultsOutput}
 
                                                     </tbody>
                                                 </table>
@@ -349,41 +371,41 @@ const App = (props) => {
                                             
                                         </div>
                                         <div className="tab-pane fade" id="get-random-prime" role="tabpanel" aria-labelledby="get-random-prime-tab">
-                                            <form className="form-horizontal form-label-left get-random-prime">
+                                            <form onSubmit={handleGetRandomPrimeSearch} className="form-horizontal form-label-left get-random-prime">
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-random-prime-apiKey">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_random_prime_apiKey">
                                                         apiKey
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get-random-prime-apiKey" name="get-random-prime-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get_random_prime_apiKey" name="get_random_prime_apiKey" required="required" className="form-control  " defaultValue="123" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-random-prime-start">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_random_prime_start">
                                                         start
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="number" id="get-random-prime-start" name="get-random-prime-start" required="required" className="form-control " defaultValue="330" />
+                                                        <input type="number" id="get_random_prime_start" name="get_random_prime_start" required="required" className="form-control " defaultValue="330" />
                                                         <br />(Required if the end is specified) the number from which the process will start (needs to be smaller than the end)
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-random-prime-end">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_random_prime_end">
                                                         end
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="number" id="get-random-prime-end" name="get-random-prime-end" required="required" className="form-control " defaultValue="1000" />
+                                                        <input type="number" id="get_random_prime_end" name="get_random_prime_end" required="required" className="form-control " defaultValue="1000" />
                                                         <br />(Required if the start is specified) the number to which the process will end (needs to be larger than the start)
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-random-prime-include-explanations" name="get-random-prime-include-explanations" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get-random-prime-include_explanations" name="get-random-prime-include_explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -393,7 +415,7 @@ const App = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-random-prime-include-prime-types-list" name="get-random-prime-include-prime-types-list"  className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_random_prime_include_prime_types_list" name="get_random_prime_include_prime_types_list"  className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -405,7 +427,7 @@ const App = (props) => {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-random-prime-language" name="get-random-prime-language" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_random_prime_language" name="get_random_prime_language" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -432,7 +454,7 @@ const App = (props) => {
                                                 </button>
                                                 <strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
                                             </div>
-                                            
+                                            {errorMessage}
                                             <div className="x_title display-results results-get-random-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -461,7 +483,7 @@ const App = (props) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="results-get-random-prime-show">
-
+                                                        {getRandomPrimeResultsOutput}
                                                     </tbody>
                                                 </table>
 
