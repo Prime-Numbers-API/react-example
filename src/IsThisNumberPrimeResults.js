@@ -58,25 +58,24 @@ class IsThisNumberPrimeResults extends React.Component {
                 //run same logic on nested loop
                 function secondLoop(nestedObject) {
                     let nestedCounter = 1;
-                    let key = "";
-                    let keyValue = "";
+                    // let key = "";
+                    // let keyValue = "";
+                    let htmlReturn = '';
                     for (let nestedKey in nestedObject) {
-                        console.log("this is giving me what I want!", nestedObject[nestedKey])
+                        console.log("nested Object: ", nestedObject)
+                        console.log("nested Object Value: ", nestedObject[nestedKey])
                         console.log("number of nested loops: ", nestedCounter)
-                        key = nestedKey;
-                        keyValue = nestedObject[nestedKey];     
+                        // key = nestedKey;
+                        // keyValue = nestedObject[nestedKey];    
+                        htmlReturn +=  `
+                        <tr key=${nestedKey}>
+                        <th scope="row">${nestedCounter++}</th>
+                        <td>${nestedKey}</td>
+                        <td>${nestedObject[nestedKey]}</td>
+                        </tr>
+                        `;
                         return (
-                            
-                            `
-                            <table>
-                            <tr key=${key}>
-                            <th scope="row">${nestedCounter++}</th>
-                            <td>${key}</td>
-                            <td>${keyValue}</td>
-                            </tr>
-                            </table>
-                            `
-                            
+                            `<table>${htmlReturn}</table>`
                         )
                     }
                 }
