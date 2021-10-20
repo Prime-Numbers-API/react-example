@@ -36,26 +36,62 @@ class IsThisNumberPrimeResults extends React.Component {
                 // })
             // });
 
+            
+
             for (let key in incomingData) {
-                console.log(typeof incomingData[key])
-                if (typeof incomingData[key] == 'object') {
+                // console.log(typeof incomingData[key])
+                console.log(incomingData[key])
 
-                    buildHtmlResults += <SubObject key={key} values={incomingData[key]} />;
-                    
-                } else {
-                    buildHtmlResults += `<tr key=${key}>`;
-                    buildHtmlResults += `<th scope="row">${counter}</th>`;
-                    buildHtmlResults += `<td>${key}</td>`;
-                    buildHtmlResults += `<td>${incomingData[key]}</td>`;
-                    buildHtmlResults += `</tr>`;
-                }
                 
+                // if (typeof incomingData[key] == 'object') {
 
-                counter++;
+                //     buildHtmlResults += <SubObject key={key} values={incomingData[key]} />;
+                    
+                // } else {
+                //     buildHtmlResults += `<tr key=${key}>`;
+                //     buildHtmlResults += `<th scope="row">${counter}</th>`;
+                //     buildHtmlResults += `<td>${key}</td>`;
+                //     buildHtmlResults += `<td>${incomingData[key]}</td>`;
+                //     buildHtmlResults += `</tr>`;
+                // }
+
+                //run same logic on nested loop
+                function secondLoop(nestedObject) {
+                    let nestedCounter = 1;
+                    let key = "";
+                    let keyValue = "";
+                    for (let nestedKey in nestedObject) {
+                        console.log("this is giving me what I want!", nestedObject[nestedKey])
+                        console.log("number of nested loops: ", nestedCounter)
+                        key = nestedKey;
+                        keyValue = nestedObject[nestedKey];     
+                        return (
+                            
+                            `
+                            <table>
+                            <tr key=${key}>
+                            <th scope="row">${nestedCounter++}</th>
+                            <td>${key}</td>
+                            <td>${keyValue}</td>
+                            </tr>
+                            </table>
+                            `
+                            
+                        )
+                    }
+                }
+
+                    buildHtmlResults += `<tr key=${key}>`;
+                    buildHtmlResults += `<th scope="row">${counter++}</th>`;
+                    buildHtmlResults += `<td>${key}</td>`; //base conversions key (contains an object)
+                    //if base conversion's (key's) value is an object --> run a second loop with that object  
+                    buildHtmlResults += `<td>${(typeof incomingData[key] == 'object') ? secondLoop(incomingData[key]) : incomingData[key]}</td>`;
+                    buildHtmlResults += `</tr>`;
+                
             }
             buildHtmlResults += '</table>';
 
-            console.log(buildHtmlResults);
+            // console.log(buildHtmlResults);
 
             return buildHtmlResults;
         };

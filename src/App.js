@@ -197,8 +197,8 @@ const App = (props) => {
          
     }
         
-    console.log("state results: ", results);
-    console.log("state.params after setState: ", params);
+    // console.log("state results: ", results);
+    // console.log("state.params after setState: ", params);
 
         //if there is an error message display it
         
