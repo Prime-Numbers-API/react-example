@@ -74,10 +74,10 @@ class IsThisNumberPrimeResults extends React.Component {
                         <td>${nestedObject[nestedKey]}</td>
                         </tr>
                         `;
-                        return (
-                            `<table>${htmlReturn}</table>`
-                        )
                     }
+                    return (
+                        `<table>${htmlReturn}</table>`
+                    )
                 }
 
                     buildHtmlResults += `<tr key=${key}>`;
