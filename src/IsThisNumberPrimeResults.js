@@ -1,28 +1,61 @@
 import React from 'react'
+import SubObject from './SubObject';
 
 class IsThisNumberPrimeResults extends React.Component {
 
 
     is_this_number_prime_api_results_details(incomingData, parentKey) {
 
-            // console.log(incomingData);
+            console.log(incomingData);
 
             //create an empty variable to store a new list item for each result
-            let buildHtmlResults = '<table class="table">';
+            let buildHtmlResults = `<table class="table" key=${parentKey}>`;
             let counter = 1;
-            for (let key in incomingData) {
 
-                buildHtmlResults += `<tr>`;
-                buildHtmlResults += `<th scope="row">${counter}</th>`;
-                buildHtmlResults += `<td>${key}</td>`;
-                buildHtmlResults += `<td>${incomingData[key]}</td>`;
-                buildHtmlResults += `</tr>`;
+            // Object.keys(incomingData).forEach(function (key) {
+            //     if (typeof incomingData[key] === 'object') {
+            //         return this.is_this_number_prime_api_results_details(incomingData[key])
+            //     } else () {
+
+            //     }
+                // buildHtmlResults += `<tr>`;
+                // buildHtmlResults += `<th scope="row">${counter}</th>`;
+                // buildHtmlResults += `<td>${key}</td>`;
+                // buildHtmlResults += `<td>${incomingData[key]}</td>`;
+                // buildHtmlResults += `</tr>`;
+
+                // counter++;
+                // Object.values(key).forEach(key=> {
+                //     buildHtmlResults += `<tr>`;
+                //     buildHtmlResults += `<th scope="row">${counter}</th>`;
+                //     buildHtmlResults += `<td>${key}</td>`;
+                //     buildHtmlResults += `<td>${incomingData[key]}</td>`;
+                //     buildHtmlResults += `</tr>`;
+
+                //     counter++;
+                // })
+            // });
+
+            for (let key in incomingData) {
+                console.log(typeof incomingData[key])
+                if (typeof incomingData[key] == 'object') {
+
+                    buildHtmlResults += <SubObject key={key} values={incomingData[key]} />;
+                    
+                } else {
+                    buildHtmlResults += `<tr key=${key}>`;
+                    buildHtmlResults += `<th scope="row">${counter}</th>`;
+                    buildHtmlResults += `<td>${key}</td>`;
+                    buildHtmlResults += `<td>${incomingData[key]}</td>`;
+                    buildHtmlResults += `</tr>`;
+                }
+                
 
                 counter++;
             }
             buildHtmlResults += '</table>';
 
-            // console.log(buildHtmlResults);
+            console.log(buildHtmlResults);
 
             return buildHtmlResults;
         };

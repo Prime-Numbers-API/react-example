@@ -197,7 +197,7 @@ const App = (props) => {
          
     }
         
-    // console.log("state results: ", results);
+    console.log("state results: ", results);
     console.log("state.params after setState: ", params);
 
         //if there is an error message display it
@@ -224,6 +224,19 @@ const App = (props) => {
         type="get_all_primes_between_two_numbers"
         content={results}
     /> : "";
+        
+
+        // const getAllPrimesBetweenTwoNumbersResultsOutput = results.map(
+        //   (value, key) => {
+        //     return (
+        //       <GetAllPrimesBetweenTwoNumbersResults
+        //         key={key}
+        //         type="get_all_primes_between_two_numbers"
+        //         content={value.results}
+        //       />
+        //     );
+        //   }
+        // );
 
     
         
