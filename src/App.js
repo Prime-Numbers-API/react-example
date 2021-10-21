@@ -46,6 +46,21 @@ const App = (props) => {
         let is_this_number_prime_api_url = `http://api.prime-numbers.io/is-this-number-prime.php?key=${data.is_this_number_prime_apiKey}&number=${data.is_this_number_prime_check_number}&include_explanations=${data.is_this_number_prime_include_explanations}&include_prime_types_list=${data.is_this_number_prime_include_prime_types_list}&language=${data.is_this_number_prime_language}`
 
         // console.log(is_this_number_prime_api_url)
+
+        const run = async () => {
+            try {
+                await fetchData();
+             } catch {
+            setError( prevState => ({
+                ...prevState,
+                error: ('Error! Something went wrong...')
+            }))
+        } finally {
+                console.log('We do cleanup here');
+            }
+        }
+        
+        run();
         
         //using the url and parameters above make the api call
         const fetchData = async (is_this_number_prime_api_url) => {
@@ -55,10 +70,19 @@ const App = (props) => {
                     ...prevState,
                     results: data
                 }))
+                // try {
+                //     if (response.ok) {
+                //     }
+                // } catch {
+                //     setError( prevState => ({
+                //         ...prevState,
+                //         error: ('Error! Something went wrong...')
+                //     }))
+                // }
                 
             }         
             return fetchData(is_this_number_prime_api_url);
-         
+        
     }
 
 
@@ -249,11 +273,22 @@ const App = (props) => {
     // console.log("state.params after setState: ", params);
 
         //if there is an error message display it
-        
-        const errorMessage = error ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{error}</strong> </div> : false
 
-        // console.log("errorMessage: ", errorMessage)
-        // console.log("state error: ", error)
+        const iterateError = (errorObject) => {
+            let errorMessage = ''
+            for (let i in errorObject) {
+                errorMessage += i;
+            }
+            return (
+                `<div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>${errorMessage}</strong> </div>`
+            )
+
+        }
+        
+        const errorMessage = error ? iterateError(error) : false
+
+        console.log("errorMessage: ", errorMessage)
+        console.log("state error: ", error)
 
         const isThisNumberPrimeResultsOutput = results ? <IsThisNumberPrimeResults
         key="1"
