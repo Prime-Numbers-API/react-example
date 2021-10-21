@@ -562,12 +562,6 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            <div className="alert alert-danger alert-dismissible show-error error-get-random-prime" role="alert">
-                                                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                                <strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
-                                            </div>
                                             {errorMessage}
                                             <div className="x_title display-results results-get-random-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
@@ -683,13 +677,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            <div className="alert alert-danger alert-dismissible show-error error-get-all-primes-between-two-numbers" role="alert">
-                                                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                                <strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
-                                            </div>
-                                            
+                                            {errorMessage}
                                             <div className="x_title display-results results-get-all-primes-between-two-numbers">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -804,13 +792,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            <div className="alert alert-danger alert-dismissible show-error error-prospect-primes-between-two-numbers" role="alert">
-                                                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                                <strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
-                                            </div>
-                                            
+                                            {errorMessage}
                                             <div className="x_title display-results results-prospect-primes-between-two-numbers">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -916,13 +898,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            <div className="alert alert-danger alert-dismissible show-error error-prospect-primes-between-two-numbers" role="alert">
-                                                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                                <strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
-                                            </div>
-                                            
+                                            {errorMessage}
                                             <div className="x_title display-results results-get-isolated-random-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
