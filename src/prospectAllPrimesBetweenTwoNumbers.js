@@ -1,9 +1,9 @@
 import React from 'react'
 
-class GetAllPrimesBetweenTwoNumbersResults extends React.Component {
+class ProspectPrimesBetweenTwoNumbersResults extends React.Component {
 
 
-    get_all_primes_between_two_numbers_api_results_details(incomingData, parentKey) {
+    prospect_primes_between_two_numbers_api_results_details(incomingData, parentKey) {
 
             console.log(incomingData);
 
@@ -76,14 +76,14 @@ class GetAllPrimesBetweenTwoNumbersResults extends React.Component {
         for (let key in content) {
             // console.log(typeof content[key]);
             if (typeof content[key] == "object") {
-                buildHtmlResults += `<tr class="results-get-all-primes-between-two-numbers-${key}">`;
+                buildHtmlResults += `<tr class="results-prospect-primes-between-two-numbers-${key}">`;
                 buildHtmlResults += `<th scope="row">${counter}</th>`;
                 buildHtmlResults += `<td>${key}</td>`;
-                buildHtmlResults += `<td class="${key}">${this.get_all_primes_between_two_numbers_api_results_details(content[key], key)}</td>`;
+                buildHtmlResults += `<td class="${key}">${this.prospect_primes_between_two_numbers_api_results_details(content[key], key)}</td>`;
                 buildHtmlResults += `</tr>`;
             }
             else {
-                buildHtmlResults += `<tr class="results-get-all-primes-between-two-numbers-${key}">`;
+                buildHtmlResults += `<tr class="results-prospect-primes-between-two-numbers-${key}">`;
                 buildHtmlResults += `<th scope="row">${counter}</th>`;
                 buildHtmlResults += `<td>${key}</td>`;
                 buildHtmlResults += `<td class="${key}">${content[key]}</td>`;
@@ -104,4 +104,4 @@ class GetAllPrimesBetweenTwoNumbersResults extends React.Component {
 
 }
 
-export default GetAllPrimesBetweenTwoNumbersResults
+export default ProspectPrimesBetweenTwoNumbersResults
