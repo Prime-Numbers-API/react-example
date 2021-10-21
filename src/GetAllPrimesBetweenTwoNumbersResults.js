@@ -5,22 +5,59 @@ class GetAllPrimesBetweenTwoNumbersResults extends React.Component {
 
     get_all_primes_between_two_numbers_api_results_details(incomingData, parentKey) {
 
-            // console.log(incomingData);
+            console.log(incomingData);
 
             //create an empty variable to store a new list item for each result
-            let buildHtmlResults = '<table class="table">';
+            let buildHtmlResults = `<table class="table" key=${parentKey}>`;
             let counter = 1;
-            for (let key in incomingData) {
+            incomingData.map((key) => {
+                console.log(key)
 
-                buildHtmlResults += `<tr>`;
-                buildHtmlResults += `<th scope="row">${counter}</th>`;
-                buildHtmlResults += `<td>${key}</td>`;
-                buildHtmlResults += `<td>${incomingData[key]}</td>`;
-                buildHtmlResults += `</tr>`;
+                //third loop for a double nested object
+                function thirdLoop(doubleNestedObject) {
+                    let doubleNestedCounter = 1; 
+                    let htmlReturn = '';
+                    for (let doubleNestedKey in doubleNestedObject) {
+                        htmlReturn +=  `
+                        <tr key=${doubleNestedKey}>
+                        <th scope="row">${doubleNestedCounter++}</th>
+                        <td>${doubleNestedKey}</td>
+                        <td>${(typeof doubleNestedObject[doubleNestedKey] == 'object') ? thirdLoop(doubleNestedObject[doubleNestedKey]) : doubleNestedObject[doubleNestedKey]}</td>
+                        </tr>
+                        `;
+                    }
+                    return (
+                        `<table>${htmlReturn}</table>`
+                    )
+                }
 
-                counter++;
-            }
-            buildHtmlResults += '</table>';
+                //second loop for nested objects
+                function secondLoop(nestedObject) {
+                    let nestedCounter = 1; 
+                    let htmlReturn = '';
+                    for (let nestedKey in nestedObject) {
+                        htmlReturn +=  `
+                        <tr key=${nestedKey}>
+                        <th scope="row">${nestedCounter++}</th>
+                        <td>${nestedKey}</td>
+                        <td>${(typeof nestedObject[nestedKey] == 'object') ? thirdLoop(nestedObject[nestedKey]) : nestedObject[nestedKey]}</td>
+                        </tr>
+                        `;
+                    }
+                    return (
+                        `<table>${htmlReturn}</table>`
+                    )
+                }
+
+                //map's return 
+                return buildHtmlResults += 
+                  `<tr>
+                    <th scope="row">${counter++}</th>
+                    <td>${(typeof key == 'object') ? secondLoop(key) : incomingData[key]}</td>
+                    
+                  </tr>`
+            }) 
+            buildHtmlResults += `</table>`;
 
             // console.log(buildHtmlResults);
 
