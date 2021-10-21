@@ -47,38 +47,27 @@ const App = (props) => {
 
         // console.log(is_this_number_prime_api_url)
 
-        const run = async () => {
-            try {
-                await fetchData();
-             } catch {
-            setError( prevState => ({
-                ...prevState,
-                error: ('Error! Something went wrong...')
-            }))
-        } finally {
-                console.log('We do cleanup here');
-            }
-        }
-        
-        run();
+
         
         //using the url and parameters above make the api call
         const fetchData = async (is_this_number_prime_api_url) => {
                 const response = await fetch(is_this_number_prime_api_url)
                 const data = await response.json();
-                setResults(prevState => ({
-                    ...prevState,
-                    results: data
-                }))
-                // try {
-                //     if (response.ok) {
-                //     }
-                // } catch {
-                //     setError( prevState => ({
-                //         ...prevState,
-                //         error: ('Error! Something went wrong...')
-                //     }))
-                // }
+                try {
+                    if (response.ok) {
+                        setResults(prevState => ({
+                            ...prevState,
+                            results: data,
+                        }))
+                    } else {
+                        throw new TypeError("Error! Something went wrong")
+                    }
+                } catch (err) {
+                    setError( prevState => ({
+                        ...prevState,
+                        error: err
+                    }))
+                } 
                 
             }         
             return fetchData(is_this_number_prime_api_url);
