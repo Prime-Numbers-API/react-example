@@ -4,6 +4,7 @@ import IsThisNumberPrimeResults from './IsThisNumberPrimeResults'
 import GetRandomPrimeResults from './GetRandomPrime'
 import GetAllPrimesBetweenTwoNumbersResults from './GetAllPrimesBetweenTwoNumbersResults'
 import ProspectPrimesBetweenTwoNumbersResults from './prospectAllPrimesBetweenTwoNumbers'
+import GetIsolatedRandomPrimeResults from './GetIsolatedRandomPrime'
 import LeftColumn from './LeftColumn'
 import TopNav from './TopNav'
 import Footer from './Footer'
@@ -245,6 +246,51 @@ const App = (props) => {
             return fetchData(prospect_primes_between_two_numbers_api_url);
          
     }
+
+
+    const handleGetIsolatedRandomPrime = (e) => {
+        e.preventDefault()
+
+        //create an object to store the search filters
+        const data = {}
+
+        //get all the from data from the form component
+        const formData = new FormData(e.target)
+
+        //for each of the keys in form data populate it with form value
+        for (let value of formData) {
+            data[value[0]] = value[1]
+        }
+
+        //check if the state is populated with the search params data
+        //console.log("data before passing to state: ", data)
+        //console.log("params before setState: ", params)
+        
+
+        //assigning the object from the form data to params in the state
+        setParams(prevState => ({
+            ...prevState, 
+            params: data
+            
+        }))
+        console.log(data)
+        let get_isolated_random_prime_api_url = `http://api.prime-numbers.io/get-isolated-random-prime.php?key=${data.get_isolated_random_prime_apiKey}&minimum_combined_prime_gap=${data.get_isolated_random_prime_minimum_combined_prime_gap}&include_explanations=${data.get_isolated_random_prime_include_explanations}&include_prime_types_list=${data.get_isolated_random_prime_include_prime_types_list}&language=${data.get_isolated_random_prime_language}`
+
+        console.log(get_isolated_random_prime_api_url)
+        
+        //using the url and parameters above make the api call
+        const fetchData = async (get_isolated_random_prime_api_url) => {
+                const response = await fetch(get_isolated_random_prime_api_url)
+                const data = await response.json();
+                setResults(prevState => ({
+                    ...prevState,
+                    results: data
+                }))
+                
+            }         
+            return fetchData(get_isolated_random_prime_api_url);
+         
+    }
         
     // console.log("state results: ", results);
     // console.log("state.params after setState: ", params);
@@ -277,6 +323,12 @@ const App = (props) => {
         const ProspectPrimesBetweenTwoNumbersResultsOutput = results ? <ProspectPrimesBetweenTwoNumbersResults
         key="1"
         type="prospect_primes_between_two_numbers"
+        content={results}
+    /> : "";
+
+        const GetIsolatedRandomPrimeResultsOutput = results ? <GetIsolatedRandomPrimeResults
+        key="1"
+        type="get_isolated_random_prime"
         content={results}
     /> : "";
         
@@ -796,24 +848,24 @@ const App = (props) => {
                                             
                                         </div>
                                         <div className="tab-pane fade" id="get-isolated-random-prime" role="tabpanel" aria-labelledby="get-isolated-random-prime">
-                                            <form className="form-horizontal form-label-left get-isolated-random-prime">
+                                            <form onSubmit={handleGetIsolatedRandomPrime} className="form-horizontal form-label-left get-isolated-random-prime">
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-isolated-random-prime-apiKey">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_isolated_random_prime_apiKey">
                                                         apiKey
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get-isolated-random-prime-apiKey" name="get-isolated-random-prime-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get_isolated_random_prime_apiKey" name="get_isolated_random_prime_apiKey" required="required" className="form-control  " defaultValue="123" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get-isolated-random-prime-minimum-combined-prime-gap">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align" htmlFor="get_isolated_random_prime_minimum_combined_prime_gap">
                                                         Minimum Combined Prime Gap
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="number" id="get-isolated-random-prime-minimum-combined-prime-gap" name="get-isolated-random-prime-minimum-combined-prime-gap" required="required" className="form-control " defaultValue="200" />
+                                                        <input type="number" id="get_isolated_random_prime_minimum_combined_prime_gap" name="get_isolated_random_prime_minimum_combined_prime_gap" required="required" className="form-control " defaultValue="200" />
                                                         <br />the total numbers of neighbouring composite numbers on the right and on the left of the current prime number, determines how isolated this prime is and how hard it is to find it (value between
                                                         200 and 500) (default is 200)
                                                     </div>
@@ -821,7 +873,7 @@ const App = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-isolated-random-prime-include-explanations" name="get-isolated-random-prime-include-explanations" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_isolated_random_prime_include_explanations" name="get_isolated_random_prime_include_explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -831,7 +883,7 @@ const App = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Prime Types List</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-isolated-random-prime-include-prime-types-list" name="get-isolated-random-prime-include-prime-types-list" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_isolated_random_prime_include_prime_types_list" name="get_isolated_random_prime_include_prime_types_list" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
@@ -843,7 +895,7 @@ const App = (props) => {
                                                         </label>
 
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-isolated-random-prime-language" name="get-isolated-random-prime-language" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_isolated_random_prime_language" name="get_isolated_random_prime_language" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="english" selected>english</option>
                                                             <option defaultValue="mandarin">mandarin</option>
                                                             <option defaultValue="hindi">hindi</option>
@@ -899,7 +951,7 @@ const App = (props) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="results-get-isolated-random-prime-show">
-
+                                                        {GetIsolatedRandomPrimeResultsOutput}
                                                     </tbody>
                                                 </table>
 
