@@ -5,7 +5,7 @@ class ProspectPrimesBetweenTwoNumbersResults extends React.Component {
 
     prospect_primes_between_two_numbers_api_results_details(incomingData, parentKey) {
 
-            console.log(incomingData);
+            // console.log(incomingData);
 
             //create an empty variable to store a new list item for each result
             let buildHtmlResults = `<table class="table" key=${parentKey}>`;
@@ -51,7 +51,7 @@ class ProspectPrimesBetweenTwoNumbersResults extends React.Component {
 
     render() {
         const content = this.props.content
-        console.log(content);
+        // console.log(content);
         let counter = 1;
         let buildHtmlResults = "";
         for (let key in content) {

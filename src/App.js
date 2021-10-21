@@ -11,28 +11,10 @@ import Footer from './Footer'
 import NavTabs from './NavTabs'
 
 const App = (props) => {
-    // const [state, setState] = useState({
-    //     results: {},
-    //     error: null,
-    //     params: {
-    //         is_this_number_prime_apiKey: 0,
-    //         is_this_number_prime_include_explanations: false,
-    //         is_this_number_prime_include_prime_types_list: false,
-    //         is_this_number_prime_language: "english",
-    //         is_this_number_prime_check_number: 0
-    //     }
-    // })
-
     const [results, setResults] = useState({});
     const [error, setError] = useState(null);
-    const [params, setParams] = useState([{
-        // is_this_number_prime_apiKey: 0,
-        // is_this_number_prime_include_explanations: false,
-        // is_this_number_prime_include_prime_types_list: false,
-        // is_this_number_prime_language: "english",
-        // is_this_number_prime_check_number: 0,
-    }]);
-    // console.log(params)
+    const [params, setParams] = useState([{}]);
+
 
     //get the input from the user
     const handleIsThisNumberPrimeSearch = (e) => {
@@ -56,7 +38,7 @@ const App = (props) => {
 
         //assigning the object from the form data to params in the state
         setParams(prevState => ({
-            ...prevState, //shallow copy of level 0 (params) but ONLY REFERENCES the key/value pairs
+            ...prevState, 
             params: data
             
         }))
@@ -73,36 +55,7 @@ const App = (props) => {
                     ...prevState,
                     results: data
                 }))
-                // .then(response => {
-                //     if (response.ok) {
-                //         return response.json();
-                //     }
-                //     return response.json().then(response => { throw new Error(response.error) })
-                // })
-                // .then(responseJson => {
-                //     // console.log(responseJson);
-                //     const responseResults = responseJson;
-                //     // console.log(results);
-                //     // let current_is_this_number_prime_results = responseJson
-                // // let updated_is_this_number_prime_results = current_is_this_number_prime_results.push(responseJson);
-                //     // console.log(updated_is_this_number_prime_results);
-                //     setResults(prevState => ({
-                //         // is_this_number_prime_results: current_is_this_number_prime_results,
-                //         ...prevState,
-                //         results: responseResults
-                //         // error: null
-                //     }))
-                // })
                 
-                // .catch(err => {
-                //     const responseErr = err;
-                //     console.log(err);
-                //     setError(prevState => ({
-                //         error: responseErr
-                //     }))
-                //     // displayError(err, "error-is-this-number-prime")
-                // })
-                // handleResults(data);
             }         
             return fetchData(is_this_number_prime_api_url);
          
@@ -135,10 +88,10 @@ const App = (props) => {
             params: data
             
         }))
-        console.log(data)
+        // console.log(data)
         let get_random_prime_api_url = `http://api.prime-numbers.io/get-random-prime.php?key=${data.get_random_prime_apiKey}&start=${data.get_random_prime_start}&end=${data.get_random_prime_end}&include_explanations=${data.get_random_prime_include_explanations}&include_prime_types_list=${data.get_random_prime_include_prime_types_list}&language=${data.get_random_prime_language}`
 
-        console.log(get_random_prime_api_url)
+        // console.log(get_random_prime_api_url)
         
         //using the url and parameters above make the api call
         const fetchData = async (get_random_prime_api_url) => {
@@ -180,10 +133,10 @@ const App = (props) => {
             params: data
             
         }))
-        console.log(data)
+        // console.log(data)
         let get_all_primes_between_two_numbers_api_url = `http://api.prime-numbers.io/get-all-primes-between-two-numbers.php?key=${data.get_all_primes_between_two_numbers_apiKey}&start=${data.get_all_primes_between_two_numbers_start}&end=${data.get_all_primes_between_two_numbers_end}&include_explanations=${data.get_all_primes_between_two_numbers_include_explanations}&include_prime_types_list=${data.get_all_primes_between_two_numbers_include_prime_types_list}&language=${data.get_all_primes_between_two_numbers_language}`
 
-        console.log(get_all_primes_between_two_numbers_api_url)
+        // console.log(get_all_primes_between_two_numbers_api_url)
         
         //using the url and parameters above make the api call
         const fetchData = async (get_all_primes_between_two_numbers_api_url) => {
@@ -228,10 +181,10 @@ const App = (props) => {
             params: data
             
         }))
-        console.log(data)
+        // console.log(data)
         let prospect_primes_between_two_numbers_api_url = `http://api.prime-numbers.io/prospect-primes-between-two-numbers.php?key=${data.prospect_primes_between_two_numbers_apiKey}&start=${data.prospect_primes_between_two_numbers_start}&end=${data.prospect_primes_between_two_numbers_end}&include_explanations=${data.prospect_primes_between_two_numbers_include_explanations}&include_prime_types_list=${data.prospect_primes_between_two_numbers_include_prime_types_list}&language=${data.prospect_primes_between_two_numbers_language}`
 
-        console.log(prospect_primes_between_two_numbers_api_url)
+        // console.log(prospect_primes_between_two_numbers_api_url)
         
         //using the url and parameters above make the api call
         const fetchData = async (prospect_primes_between_two_numbers_api_url) => {
@@ -273,10 +226,10 @@ const App = (props) => {
             params: data
             
         }))
-        console.log(data)
+        // console.log(data)
         let get_isolated_random_prime_api_url = `http://api.prime-numbers.io/get-isolated-random-prime.php?key=${data.get_isolated_random_prime_apiKey}&minimum_combined_prime_gap=${data.get_isolated_random_prime_minimum_combined_prime_gap}&include_explanations=${data.get_isolated_random_prime_include_explanations}&include_prime_types_list=${data.get_isolated_random_prime_include_prime_types_list}&language=${data.get_isolated_random_prime_language}`
 
-        console.log(get_isolated_random_prime_api_url)
+        // console.log(get_isolated_random_prime_api_url)
         
         //using the url and parameters above make the api call
         const fetchData = async (get_isolated_random_prime_api_url) => {
@@ -332,22 +285,6 @@ const App = (props) => {
         content={results}
     /> : "";
         
-
-        // const getAllPrimesBetweenTwoNumbersResultsOutput = results.map(
-        //   (value, key) => {
-        //     return (
-        //       <GetAllPrimesBetweenTwoNumbersResults
-        //         key={key}
-        //         type="get_all_primes_between_two_numbers"
-        //         content={value.results}
-        //       />
-        //     );
-        //   }
-        // );
-
-    
-        
-
 
         return (
         <div className="main_container">

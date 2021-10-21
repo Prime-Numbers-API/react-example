@@ -1,5 +1,5 @@
 import React from 'react'
-import SubObject from './SubObject';
+
 
 class IsThisNumberPrimeResults extends React.Component {
 
@@ -15,32 +15,14 @@ class IsThisNumberPrimeResults extends React.Component {
             
 
             for (let key in incomingData) {
-                // console.log(typeof incomingData[key])
-               // console.log(incomingData[key])
-
-                
-                // if (typeof incomingData[key] == 'object') {
-
-                //     buildHtmlResults += <SubObject key={key} values={incomingData[key]} />;
-                    
-                // } else {
-                //     buildHtmlResults += `<tr key=${key}>`;
-                //     buildHtmlResults += `<th scope="row">${counter}</th>`;
-                //     buildHtmlResults += `<td>${key}</td>`;
-                //     buildHtmlResults += `<td>${incomingData[key]}</td>`;
-                //     buildHtmlResults += `</tr>`;
-                // }
+               
+               // console.log(incomingData)
 
                 //run same logic on nested loop
                 function secondLoop(nestedObject) {
                     let nestedCounter = 1;
-                    // let key = "";
-                    // let keyValue = "";
                     let htmlReturn = '';
                     for (let nestedKey in nestedObject) {
-                        // console.log("nested Object: ", nestedObject)
-                        // console.log("nested Object Value: ", nestedObject[nestedKey])
-                        // console.log("number of nested loops: ", nestedCounter)
                           
                         htmlReturn +=  `
                         <tr key=${nestedKey}>
@@ -57,8 +39,7 @@ class IsThisNumberPrimeResults extends React.Component {
 
                     buildHtmlResults += `<tr key=${key}>`;
                     buildHtmlResults += `<th scope="row">${counter++}</th>`;
-                    buildHtmlResults += `<td>${key}</td>`; //base conversions key (contains an object)
-                    //if base conversion's (key's) value is an object --> run a second loop with that object  
+                    buildHtmlResults += `<td>${key}</td>`; 
                     buildHtmlResults += `<td>${(typeof incomingData[key] == 'object') ? secondLoop(incomingData[key]) : incomingData[key]}</td>`;
                     buildHtmlResults += `</tr>`;
                 
