@@ -10,31 +10,11 @@ class ProspectPrimesBetweenTwoNumbersResults extends React.Component {
             //create an empty variable to store a new list item for each result
             let buildHtmlResults = `<table class="table" key=${parentKey}>`;
             let counter = 1;
-            if (Array.isArray(incomingData) ) {
+            
 
             
-            incomingData.map((key) => {
-                console.log(key)
+            for (let key in incomingData) {
 
-                //third loop for a double nested object
-                function thirdLoop(doubleNestedObject) {
-                    let doubleNestedCounter = 1; 
-                    let htmlReturn = '';
-                    for (let doubleNestedKey in doubleNestedObject) {
-                        htmlReturn +=  `
-                        <tr key=${doubleNestedKey}>
-                        <th scope="row">${doubleNestedCounter++}</th>
-                        <td>${doubleNestedKey}</td>
-                        <td>${doubleNestedObject[doubleNestedKey]}</td>
-                        </tr>
-                        `;
-                    }
-                    return (
-                        `<table>${htmlReturn}</table>`
-                    )
-                }
-
-                //second loop for nested objects
                 function secondLoop(nestedObject) {
                     let nestedCounter = 1; 
                     let htmlReturn = '';
@@ -43,7 +23,7 @@ class ProspectPrimesBetweenTwoNumbersResults extends React.Component {
                         <tr key=${nestedKey}>
                         <th scope="row">${nestedCounter++}</th>
                         <td>${nestedKey}</td>
-                        <td>${(typeof nestedObject[nestedKey] == 'object') ? thirdLoop(nestedObject[nestedKey]) : nestedObject[nestedKey]}</td>
+                        <td>${nestedObject[nestedKey]}</td>
                         </tr>
                         `;
                     }
@@ -51,16 +31,17 @@ class ProspectPrimesBetweenTwoNumbersResults extends React.Component {
                         `<table>${htmlReturn}</table>`
                     )
                 }
+                
 
-                //map's return 
-                return buildHtmlResults += 
-                  `<tr>
-                    <th scope="row">${counter++}</th>
-                    <td>${(typeof key == 'object') ? secondLoop(key) : incomingData[key]}</td>
-                    
-                  </tr>`
-            }) 
-        }
+                buildHtmlResults += `<tr>`;
+                buildHtmlResults += `<th scope="row">${counter++}</th>`;
+                buildHtmlResults += `<td>${key}</td>`;
+                buildHtmlResults += `<td>${(typeof incomingData[key] == 'object') ? secondLoop(incomingData[key]) : incomingData[key]}</td>`;
+                buildHtmlResults += `</tr>`;
+                buildHtmlResults += `</tr>`;
+
+            }
+        
             buildHtmlResults += `</table>`;
 
             // console.log(buildHtmlResults);

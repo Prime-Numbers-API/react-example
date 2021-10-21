@@ -274,9 +274,9 @@ const App = (props) => {
         content={results}
     /> : "";
 
-        const ProspectPrimesBetweenTwoNumbersResultsOutput = results ? <GetAllPrimesBetweenTwoNumbersResults
+        const ProspectPrimesBetweenTwoNumbersResultsOutput = results ? <ProspectPrimesBetweenTwoNumbersResults
         key="1"
-        type="get_all_primes_between_two_numbers"
+        type="prospect_primes_between_two_numbers"
         content={results}
     /> : "";
         
