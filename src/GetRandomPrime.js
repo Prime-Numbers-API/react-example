@@ -5,20 +5,38 @@ class GetRandomPrimeResults extends React.Component {
 
     get_random_prime_api_results_details(incomingData, parentKey) {
 
-            // console.log(incomingData);
+            console.log(incomingData);
 
             //create an empty variable to store a new list item for each result
-            let buildHtmlResults = '<table class="table">';
+            let buildHtmlResults = `<table class="table" key=${parentKey}>`;
             let counter = 1;
             for (let key in incomingData) {
 
+                function secondLoop(nestedObject) {
+                    let nestedCounter = 1; 
+                    let htmlReturn = '';
+                    for (let nestedKey in nestedObject) {
+                        htmlReturn +=  `
+                        <tr key=${nestedKey}>
+                        <th scope="row">${nestedCounter++}</th>
+                        <td>${nestedKey}</td>
+                        <td>${nestedObject[nestedKey]}</td>
+                        </tr>
+                        `;
+                    }
+                    return (
+                        `<table>${htmlReturn}</table>`
+                    )
+                }
+                
+
                 buildHtmlResults += `<tr>`;
-                buildHtmlResults += `<th scope="row">${counter}</th>`;
+                buildHtmlResults += `<th scope="row">${counter++}</th>`;
                 buildHtmlResults += `<td>${key}</td>`;
-                buildHtmlResults += `<td>${incomingData[key]}</td>`;
+                buildHtmlResults += `<td>${(typeof incomingData[key] == 'object') ? secondLoop(incomingData[key]) : incomingData[key]}</td>`;
+                buildHtmlResults += `</tr>`;
                 buildHtmlResults += `</tr>`;
 
-                counter++;
             }
             buildHtmlResults += '</table>';
 

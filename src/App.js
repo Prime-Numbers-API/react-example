@@ -412,7 +412,7 @@ const App = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Include Explanations</label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                            <select id="get-random-prime-include_explanations" name="get-random-prime-include_explanations" className="select2_single form-control" tabIndex="-1" required="required">
+                                                            <select id="get_random_prime_include_explanations" name="get_random_prime_include_explanations" className="select2_single form-control" tabIndex="-1" required="required">
                                                             <option defaultValue="true">true</option>
                                                             <option defaultValue="false" selected>false</option>
                                                         </select>
