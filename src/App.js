@@ -12,7 +12,7 @@ import NavTabs from './NavTabs'
 
 const App = (props) => {
     const [results, setResults] = useState({});
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(false);
     const [params, setParams] = useState([{}]);
 
 
@@ -53,6 +53,10 @@ const App = (props) => {
         const fetchData = async (is_this_number_prime_api_url) => {
                 const response = await fetch(is_this_number_prime_api_url)
                 const data = await response.json();
+                setError( prevState => ({
+                    ...prevState,
+                    error: false
+                }))
                 try {
                     if (response.ok) {
                         setResults(prevState => ({
@@ -266,10 +270,10 @@ const App = (props) => {
         const iterateError = (errorObject) => {
             let errorMessage = ''
             for (let i in errorObject) {
-                errorMessage += i;
+                errorMessage += [i];
             }
             return (
-                `<div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>${errorMessage}</strong> </div>`
+                <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{errorMessage}</strong> </div>
             )
 
         }
