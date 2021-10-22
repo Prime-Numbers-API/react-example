@@ -13,7 +13,7 @@ import ErrorHandler from './ErrorHandler'
 
 const App = (props) => {
     const [results, setResults] = useState({});
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(false);
     const [params, setParams] = useState([{}]);
 
 
@@ -59,7 +59,7 @@ const App = (props) => {
                 //clear any error that might be in state
                 setError( prevState => ({
                     ...prevState,
-                    error: null
+                    error: false
                 }))
                 try {
                     if (response.ok) {
@@ -295,7 +295,7 @@ const App = (props) => {
         // }
             const errorMessage = error && (typeof error == 'object') ? <ErrorHandler
             content={error}
-            /> : null
+            /> : ""
     
 
         const isThisNumberPrimeResultsOutput = results ? <IsThisNumberPrimeResults
