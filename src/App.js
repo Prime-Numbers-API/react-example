@@ -12,7 +12,7 @@ import NavTabs from './NavTabs'
 
 const App = (props) => {
     const [results, setResults] = useState({});
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
     const [params, setParams] = useState([{}]);
 
 
@@ -47,12 +47,15 @@ const App = (props) => {
 
         // console.log(is_this_number_prime_api_url)
 
-
+        // const errorThrow = async () => {
+        //     throw new TypeError("Error! Something went wrong")
+        // }
         
         //using the url and parameters above make the api call
         const fetchData = async (is_this_number_prime_api_url) => {
                 const response = await fetch(is_this_number_prime_api_url)
                 const data = await response.json();
+                //clear any error that might be in state
                 setError( prevState => ({
                     ...prevState,
                     error: false
@@ -64,7 +67,7 @@ const App = (props) => {
                             results: data,
                         }))
                     } else {
-                        throw new TypeError("Error! Something went wrong")
+                        throw new Error(response.error) 
                     }
                 } catch (err) {
                     setError( prevState => ({
@@ -267,21 +270,30 @@ const App = (props) => {
 
         //if there is an error message display it
 
-        const iterateError = (errorObject) => {
-            let errorMessage = ''
-            for (let i in errorObject) {
-                errorMessage += [i];
+        
+        // const errorMessage = error ? error.toString
+        const errorBuilder = () => {
+            const iterateError = (errorObject) => {
+                // console.log(typeof errorObject)
+                let errorMessage = ''
+                for (let key in errorObject) {
+                    console.log("iteratedErrorKey: ", key)
+                    errorMessage += `<div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>${errorObject[key]}</strong> </div>`
+                }
+                return (
+                    errorMessage
+                )
+    
             }
-            return (
-                <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{errorMessage}</strong> </div>
-            )
+
+            const errorMessage = error && (typeof error == 'object') ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{iterateError(error)}</strong> </div> : null
+    
+            // console.log("typeof error: ", typeof error)
+            // console.log("errorMessage: ", errorMessage)
+            // console.log(error ? error.toString() : "state error: ", error)
+            return errorMessage
 
         }
-        
-        const errorMessage = error ? iterateError(error) : false
-
-        console.log("errorMessage: ", errorMessage)
-        console.log("state error: ", error)
 
         const isThisNumberPrimeResultsOutput = results ? <IsThisNumberPrimeResults
         key="1"
@@ -411,7 +423,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorMessage}
+                                            {errorBuilder}
                                             <div className="x_title display-results results-is-this-number-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -527,7 +539,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorMessage}
+                                            {errorBuilder}
                                             <div className="x_title display-results results-get-random-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -642,7 +654,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorMessage}
+                                            {errorBuilder}
                                             <div className="x_title display-results results-get-all-primes-between-two-numbers">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -757,7 +769,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorMessage}
+                                            {errorBuilder}
                                             <div className="x_title display-results results-prospect-primes-between-two-numbers">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -863,7 +875,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorMessage}
+                                            {errorBuilder}
                                             <div className="x_title display-results results-get-isolated-random-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
