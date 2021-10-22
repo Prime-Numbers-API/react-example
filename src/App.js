@@ -9,6 +9,7 @@ import LeftColumn from './LeftColumn'
 import TopNav from './TopNav'
 import Footer from './Footer'
 import NavTabs from './NavTabs'
+import ErrorHandler from './ErrorHandler'
 
 const App = (props) => {
     const [results, setResults] = useState({});
@@ -58,7 +59,7 @@ const App = (props) => {
                 //clear any error that might be in state
                 setError( prevState => ({
                     ...prevState,
-                    error: false
+                    error: null
                 }))
                 try {
                     if (response.ok) {
@@ -272,28 +273,30 @@ const App = (props) => {
 
         
         // const errorMessage = error ? error.toString
-        const errorBuilder = () => {
-            const iterateError = (errorObject) => {
-                // console.log(typeof errorObject)
-                let errorMessage = ''
-                for (let key in errorObject) {
-                    console.log("iteratedErrorKey: ", key)
-                    errorMessage += `<div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>${errorObject[key]}</strong> </div>`
-                }
-                return (
-                    errorMessage
-                )
+        // const errorBuilder = () => {
+        //     const iterateError = (errorObject) => {
+        //         console.log(typeof errorObject)
+        //         let errorMessage = ''
+        //         for (let key in errorObject) {
+        //             console.log("iteratedErrorKey: ", key)
+        //             errorMessage += `${errorObject[key]}`
+        //         }
+        //         return (
+        //             errorMessage
+        //         )
     
-            }
+        //     }
 
-            const errorMessage = error && (typeof error == 'object') ? <div className="alert alert-danger alert-dismissible show-error error-is-this-number-prime" role="alert"> <button type="button" className="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> <strong>{iterateError(error)}</strong> </div> : null
+        //     console.log("typeof error: ", typeof error)
+        //     console.log("errorMessage: ", errorMessage)
+        //     console.log(error)
+        //     return errorMessage
+            
+        // }
+            const errorMessage = error && (typeof error == 'object') ? <ErrorHandler
+            content={error}
+            /> : null
     
-            // console.log("typeof error: ", typeof error)
-            // console.log("errorMessage: ", errorMessage)
-            // console.log(error ? error.toString() : "state error: ", error)
-            return errorMessage
-
-        }
 
         const isThisNumberPrimeResultsOutput = results ? <IsThisNumberPrimeResults
         key="1"
@@ -423,7 +426,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorBuilder}
+                                            {errorMessage}
                                             <div className="x_title display-results results-is-this-number-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -539,7 +542,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorBuilder}
+                                            {errorMessage}
                                             <div className="x_title display-results results-get-random-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -654,7 +657,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorBuilder}
+                                            {errorMessage}
                                             <div className="x_title display-results results-get-all-primes-between-two-numbers">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -769,7 +772,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorBuilder}
+                                            {errorMessage}
                                             <div className="x_title display-results results-prospect-primes-between-two-numbers">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
@@ -875,7 +878,7 @@ const App = (props) => {
                                                     </div>
                                                 </div>
                                             </form>
-                                            {errorBuilder}
+                                            {errorMessage}
                                             <div className="x_title display-results results-get-isolated-random-prime">
                                                 <h2>Basic Tables <small>basic table subtitle</small></h2>
                                                 <ul className="nav navbar-right panel_toolbox">
