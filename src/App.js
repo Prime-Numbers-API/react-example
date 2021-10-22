@@ -178,10 +178,25 @@ const App = (props) => {
         const fetchData = async (get_all_primes_between_two_numbers_api_url) => {
                 const response = await fetch(get_all_primes_between_two_numbers_api_url)
                 const data = await response.json();
-                setResults(prevState => ({
+                setError( prevState => ({
                     ...prevState,
-                    results: data
+                    error: false
                 }))
+                try {
+                    if (response.ok) {
+                        setResults(prevState => ({
+                            ...prevState,
+                            results: data,
+                        }))
+                    } else {
+                        throw new Error(response.error) 
+                    }
+                } catch (err) {
+                    setError( prevState => ({
+                        ...prevState,
+                        error: err
+                    }))
+                } 
                 
             }         
             return fetchData(get_all_primes_between_two_numbers_api_url);
@@ -226,10 +241,25 @@ const App = (props) => {
         const fetchData = async (prospect_primes_between_two_numbers_api_url) => {
                 const response = await fetch(prospect_primes_between_two_numbers_api_url)
                 const data = await response.json();
-                setResults(prevState => ({
+                setError( prevState => ({
                     ...prevState,
-                    results: data
+                    error: false
                 }))
+                try {
+                    if (response.ok) {
+                        setResults(prevState => ({
+                            ...prevState,
+                            results: data,
+                        }))
+                    } else {
+                        throw new Error(response.error) 
+                    }
+                } catch (err) {
+                    setError( prevState => ({
+                        ...prevState,
+                        error: err
+                    }))
+                } 
                 
             }         
             return fetchData(prospect_primes_between_two_numbers_api_url);
@@ -271,10 +301,25 @@ const App = (props) => {
         const fetchData = async (get_isolated_random_prime_api_url) => {
                 const response = await fetch(get_isolated_random_prime_api_url)
                 const data = await response.json();
-                setResults(prevState => ({
+                setError( prevState => ({
                     ...prevState,
-                    results: data
+                    error: false
                 }))
+                try {
+                    if (response.ok) {
+                        setResults(prevState => ({
+                            ...prevState,
+                            results: data,
+                        }))
+                    } else {
+                        throw new Error(response.error) 
+                    }
+                } catch (err) {
+                    setError( prevState => ({
+                        ...prevState,
+                        error: err
+                    }))
+                } 
                 
             }         
             return fetchData(get_isolated_random_prime_api_url);
