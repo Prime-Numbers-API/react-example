@@ -118,10 +118,25 @@ const App = (props) => {
         const fetchData = async (get_random_prime_api_url) => {
                 const response = await fetch(get_random_prime_api_url)
                 const data = await response.json();
-                setResults(prevState => ({
+                setError( prevState => ({
                     ...prevState,
-                    results: data
+                    error: false
                 }))
+                try {
+                    if (response.ok) {
+                        setResults(prevState => ({
+                            ...prevState,
+                            results: data,
+                        }))
+                    } else {
+                        throw new Error(response.error) 
+                    }
+                } catch (err) {
+                    setError( prevState => ({
+                        ...prevState,
+                        error: err
+                    }))
+                } 
                 
             }         
             return fetchData(get_random_prime_api_url);
