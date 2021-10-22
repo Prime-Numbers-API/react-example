@@ -24,7 +24,6 @@ export default class ErrorHandler extends Component {
         }
         return (
             <>
-                <div  dangerouslySetInnerHTML={{__html: errorMessage }} />
             </>
         )
     }
