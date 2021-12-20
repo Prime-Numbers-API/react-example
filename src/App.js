@@ -426,7 +426,7 @@ const App = (props) => {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="is_this_number_prime_apiKey" name="is_this_number_prime_apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="is_this_number_prime_apiKey" name="is_this_number_prime_apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -532,7 +532,7 @@ const App = (props) => {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get_random_prime_apiKey" name="get_random_prime_apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get_random_prime_apiKey" name="get_random_prime_apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -647,7 +647,7 @@ const App = (props) => {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get_all_primes_between_two_numbers_apiKey" name="get_all_primes_between_two_numbers_apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get_all_primes_between_two_numbers_apiKey" name="get_all_primes_between_two_numbers_apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -762,7 +762,7 @@ const App = (props) => {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="prospect_primes_between_two_numbers_apiKey" name="prospect_primes_between_two_numbers_apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="prospect_primes_between_two_numbers_apiKey" name="prospect_primes_between_two_numbers_apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -877,7 +877,7 @@ const App = (props) => {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get_isolated_random_prime_apiKey" name="get_isolated_random_prime_apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get_isolated_random_prime_apiKey" name="get_isolated_random_prime_apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>

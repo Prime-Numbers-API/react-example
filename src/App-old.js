@@ -303,7 +303,7 @@ class App extends Component {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="is-this-number-prime-apiKey" name="is-this-number-prime-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="is-this-number-prime-apiKey" name="is-this-number-prime-apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -414,7 +414,7 @@ class App extends Component {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get-random-prime-apiKey" name="get-random-prime-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get-random-prime-apiKey" name="get-random-prime-apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -535,7 +535,7 @@ class App extends Component {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get-all-primes-between-two-numbers-apiKey" name="get-all-primes-between-two-numbers-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get-all-primes-between-two-numbers-apiKey" name="get-all-primes-between-two-numbers-apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -656,7 +656,7 @@ class App extends Component {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="prospect-primes-between-two-numbers-apiKey" name="prospect-primes-between-two-numbers-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="prospect-primes-between-two-numbers-apiKey" name="prospect-primes-between-two-numbers-apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
@@ -777,7 +777,7 @@ class App extends Component {
                                                         <span className="required">*</span>
                                                         </label>
                                                     <div className="col-md-6 col-sm-6 ">
-                                                        <input type="text" id="get-isolated-random-prime-apiKey" name="get-isolated-random-prime-apiKey" required="required" className="form-control  " defaultValue="123" />
+                                                        <input type="text" id="get-isolated-random-prime-apiKey" name="get-isolated-random-prime-apiKey" required="required" className="form-control  " defaultValue="YOUR_API_KEY" />
                                                         <br />(Required) your API key
                                                     </div>
                                                 </div>
